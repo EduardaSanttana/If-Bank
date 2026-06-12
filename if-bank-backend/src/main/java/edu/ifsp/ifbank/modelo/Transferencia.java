@@ -9,69 +9,61 @@ import jakarta.persistence.*;
 @Table(name = "transferencia")
 public class Transferencia {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "conta_origem_id")
-	private Conta contaOrigem;
+    @ManyToOne
+    @JoinColumn(name = "conta_origem_id")
+    private Conta contaOrigem;
 
-	@ManyToOne
-	@JoinColumn(name = "conta_destino_id")
-	private Conta contaDestino;
+    @ManyToOne
+    @JoinColumn(name = "conta_destino_id")
+    private Conta contaDestino;
 
-	private BigDecimal valor;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal valor;
 
-	private LocalDateTime dataTransferencia;
+    @Column(name = "data_transferencia")
+    private LocalDateTime dataTransferencia;
 
-	private String descricao;
+    public Long getId() {
+        return id;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Conta getContaOrigem() {
+        return contaOrigem;
+    }
 
-	public Conta getContaOrigem() {
-		return contaOrigem;
-	}
+    public void setContaOrigem(Conta contaOrigem) {
+        this.contaOrigem = contaOrigem;
+    }
 
-	public void setContaOrigem(Conta contaOrigem) {
-		this.contaOrigem = contaOrigem;
-	}
+    public Conta getContaDestino() {
+        return contaDestino;
+    }
 
-	public Conta getContaDestino() {
-		return contaDestino;
-	}
+    public void setContaDestino(Conta contaDestino) {
+        this.contaDestino = contaDestino;
+    }
 
-	public void setContaDestino(Conta contaDestino) {
-		this.contaDestino = contaDestino;
-	}
+    public BigDecimal getValor() {
+        return valor;
+    }
 
-	public BigDecimal getValor() {
-		return valor;
-	}
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
+    public LocalDateTime getDataTransferencia() {
+        return dataTransferencia;
+    }
 
-	public LocalDateTime getDataTransferencia() {
-		return dataTransferencia;
-	}
-
-	public void setDataTransferencia(LocalDateTime dataTransferencia) {
-		this.dataTransferencia = dataTransferencia;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDataTransferencia(LocalDateTime dataTransferencia) {
+        this.dataTransferencia = dataTransferencia;
+    }
 }

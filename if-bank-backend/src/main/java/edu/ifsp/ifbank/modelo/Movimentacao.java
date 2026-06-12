@@ -3,6 +3,8 @@ package edu.ifsp.ifbank.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.ifsp.ifbank.modelo.enums.TipoMovimentacao;
 import jakarta.persistence.*;
 
@@ -10,68 +12,72 @@ import jakarta.persistence.*;
 @Table(name = "movimentacao")
 public class Movimentacao {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	private TipoMovimentacao tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoMovimentacao tipo;
 
-	private BigDecimal valor;
+    @Column(precision = 15, scale = 2)
+    private BigDecimal valor;
 
-	private String descricao;
+    @Column(length = 200)
+    private String descricao;
 
-	private LocalDateTime data;
+    @Column(name = "data_movimentacao")
+    private LocalDateTime dataMovimentacao;
 
-	@ManyToOne
-	@JoinColumn(name = "conta_id")
-	private Conta conta;
+    @ManyToOne
+    @JoinColumn(name = "conta_id")
+    @JsonIgnore
+    private Conta conta;
 
-	public Integer getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public TipoMovimentacao getTipo() {
-		return tipo;
-	}
+    public TipoMovimentacao getTipo() {
+        return tipo;
+    }
 
-	public void setTipo(TipoMovimentacao tipo) {
-		this.tipo = tipo;
-	}
+    public void setTipo(TipoMovimentacao tipo) {
+        this.tipo = tipo;
+    }
 
-	public BigDecimal getValor() {
-		return valor;
-	}
+    public BigDecimal getValor() {
+        return valor;
+    }
 
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public LocalDateTime getData() {
-		return data;
-	}
+    public LocalDateTime getDataMovimentacao() {
+        return dataMovimentacao;
+    }
 
-	public void setData(LocalDateTime data) {
-		this.data = data;
-	}
+    public void setDataMovimentacao(LocalDateTime dataMovimentacao) {
+        this.dataMovimentacao = dataMovimentacao;
+    }
 
-	public Conta getConta() {
-		return conta;
-	}
+    public Conta getConta() {
+        return conta;
+    }
 
-	public void setConta(Conta conta) {
-		this.conta = conta;
-	}
+    public void setConta(Conta conta) {
+        this.conta = conta;
+    }
 }

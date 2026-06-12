@@ -1,7 +1,8 @@
 package edu.ifsp.ifbank.modelo;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import edu.ifsp.ifbank.modelo.enums.PerfilUsuario;
 import edu.ifsp.ifbank.modelo.enums.StatusUsuario;
@@ -16,7 +17,7 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@NotBlank
 	@Size(min = 2, max = 60)
@@ -25,6 +26,7 @@ public class Usuario {
 	@Column(unique = true, nullable = false, length = 11)
 	private String cpf;
 
+	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
 	@Size(max = 200)
@@ -34,9 +36,10 @@ public class Usuario {
 	private String telefone;
 
 	@Email
-	@Column(unique = true, length = 100)
+	@Column(unique = true, nullable = false, length = 100)
 	private String email;
 
+	@Column(name = "senha_hash", nullable = false)
 	private String senha;
 
 	private String foto;
@@ -47,18 +50,15 @@ public class Usuario {
 	@Enumerated(EnumType.STRING)
 	private StatusUsuario status;
 
-	private LocalDateTime createdAt;
-
-	private LocalDateTime updatedAt;
-
 	@OneToOne(mappedBy = "usuario")
+	@JsonIgnoreProperties("usuario")
 	private Conta conta;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -140,22 +140,6 @@ public class Usuario {
 
 	public void setStatus(StatusUsuario status) {
 		this.status = status;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 
 	public Conta getConta() {

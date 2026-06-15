@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import edu.ifsp.ifbank.modelo.Conta;
 
-public interface ContaRepositorio extends JpaRepository<Conta, Integer> {
+public interface ContaRepositorio extends JpaRepository<Conta, Long> {
 	
 }
 

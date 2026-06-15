@@ -3,6 +3,8 @@ package edu.ifsp.ifbank.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,25 +13,29 @@ public class Investimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String tipo;
 
+    @Column(name = "valor_aplicado", precision = 15, scale = 2)
     private BigDecimal valorAplicado;
 
+    @Column(precision = 15, scale = 2)
     private BigDecimal rendimento;
 
+    @Column(name = "data_aplicacao")
     private LocalDateTime dataAplicacao;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuario usuario;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

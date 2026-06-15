@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import edu.ifsp.ifbank.modelo.Investimento;
 
-public interface InvestimentoRepositorio extends JpaRepository<Investimento, Integer> {
+public interface InvestimentoRepositorio extends JpaRepository<Investimento, Long> {
 	
 }
 

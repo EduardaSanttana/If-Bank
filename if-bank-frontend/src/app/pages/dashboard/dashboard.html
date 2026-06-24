@@ -1,1 +1,31 @@
-<p>dashboard works!</p>
+<h2>Usuários</h2>
+
+<table>
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Perfil</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    @for (usuario of (usuarios$ | async); track usuario.id) {
+
+      <tr>
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.nome }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.perfil }}</td>
+        <td>{{ usuario.status }}</td>
+      </tr>
+
+    }
+
+  </tbody>
+
+</table>

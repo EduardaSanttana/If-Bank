@@ -1,31 +1,108 @@
-<h2>Usuários</h2>
+<div class="dashboard">
 
-<table>
+  <div class="header">
 
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Email</th>
-      <th>Perfil</th>
-      <th>Status</th>
-    </tr>
-  </thead>
+    <div class="logo-area">
+      <div class="logo-ifbank">IF</div>
 
-  <tbody>
+      <div class="logo-text">
+        <h1>IF Bank</h1>
+        <span></span>
+      </div>
+    </div>
 
-    @for (usuario of (usuarios$ | async); track usuario.id) {
+    <div class="header-right">
+      <h2>Olá, {{ usuarioLogado.nome }} 👋</h2>
+      <span>Bem-vinda de volta</span>
+    </div>
 
-      <tr>
-        <td>{{ usuario.id }}</td>
-        <td>{{ usuario.nome }}</td>
-        <td>{{ usuario.email }}</td>
-        <td>{{ usuario.perfil }}</td>
-        <td>{{ usuario.status }}</td>
-      </tr>
+  </div>
 
-    }
+<nav class="navbar">
+  <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+  <a routerLink="/transferencias" routerLinkActive="active">Transferências</a>
+  <a routerLink="/extrato" routerLinkActive="active">Extrato</a>
+  <a routerLink="/investimentos" routerLinkActive="active">Investimentos</a>
+  <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+</nav>
 
-  </tbody>
+  <div class="welcome">
+    <h2>Seu resumo financeiro</h2>
+    <p>Acompanhe suas movimentações e controle sua conta em tempo real.</p>
+  </div>
 
-</table>
+  <div class="cards">
+
+    <div class="card">
+      <span class="titulo-card">Saldo atual</span>
+      <h2>R$ 12.450,90</h2>
+      <small>Atualizado agora</small>
+    </div>
+
+    <div class="card">
+      <span class="titulo-card">Entradas</span>
+      <h2>R$ 3.200,00</h2>
+      <small>Este mês</small>
+    </div>
+
+    <div class="card">
+      <span class="titulo-card">Saídas</span>
+      <h2>R$ 1.780,50</h2>
+      <small>Este mês</small>
+    </div>
+
+    <div class="card">
+      <span class="titulo-card">Investimentos</span>
+      <h2>R$ 8.000,00</h2>
+      <small>Carteira ativa</small>
+    </div>
+
+  </div>
+
+  <div class="usuarios">
+
+    <div class="topo-tabela">
+
+      <div>
+        <h2>Usuário do sistema</h2>
+        <p>Dados do cliente logado no IF Bank</p>
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Perfil</th>
+          <th>Status</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td>{{ usuarioLogado.id }}</td>
+          <td>{{ usuarioLogado.nome }}</td>
+          <td>{{ usuarioLogado.email }}</td>
+          <td>
+            <span class="perfil">
+              {{ usuarioLogado.perfil }}
+            </span>
+          </td>
+          <td>
+            <span class="status">
+              {{ usuarioLogado.status }}
+            </span>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

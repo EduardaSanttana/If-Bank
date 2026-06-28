@@ -9,18 +9,25 @@ import { Investimentos } from './pages/investimentos/investimentos';
 import { Gerente } from './pages/gerente/gerente';
 import { Perfil } from './pages/perfil/perfil';
 import { Login } from './pages/login/login';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
 
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
 
   {
+    path: 'login',
+    component: Login
+  },
+
+  {
     path: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    canActivate: [authGuard]
   },
 
   {
@@ -35,32 +42,32 @@ export const routes: Routes = [
 
   {
     path: 'transferencias',
-    component: Transferencias
+    component: Transferencias,
+    canActivate: [authGuard]
   },
 
   {
     path: 'extrato',
-    component: Extrato
+    component: Extrato,
+    canActivate: [authGuard]
   },
 
   {
     path: 'investimentos',
-    component: Investimentos
+    component: Investimentos,
+    canActivate: [authGuard]
   },
 
   {
     path: 'gerente',
-    component: Gerente
+    component: Gerente,
+    canActivate: [authGuard]
   },
 
   {
     path: 'perfil',
-    component: Perfil
-  },
-
-  {
-    path: 'login',
-    component: Login
+    component: Perfil,
+    canActivate: [authGuard]
   }
 
 ];

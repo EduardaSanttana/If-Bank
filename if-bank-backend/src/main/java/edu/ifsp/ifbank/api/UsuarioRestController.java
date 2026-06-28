@@ -1,6 +1,7 @@
 package edu.ifsp.ifbank.api;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,20 @@ public class UsuarioRestController {
 		}
 
 		return ResponseEntity.notFound().build();
+	}
+
+	@PostMapping(path = "/login", consumes = "application/json")
+	public ResponseEntity<Usuario> login(@RequestBody Map<String, String> credenciais) {
+
+		String email = credenciais.get("email");
+		String senha = credenciais.get("senha");
+
+		Optional<Usuario> opt = repo.findByEmail(email);
+
+		if (opt.isPresent() && opt.get().getSenha().equals(senha)) {
+			return ResponseEntity.ok(opt.get());
+		}
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
 }

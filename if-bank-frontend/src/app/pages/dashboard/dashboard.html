@@ -12,19 +12,22 @@
     </div>
 
     <div class="header-right">
-      <h2>Olá, {{ usuarioLogado.nome }} 👋</h2>
-      <span>Bem-vinda de volta</span>
+      <h2>Olá, {{ usuario?.nome ?? '...' }} 👋</h2>
+      <span>Bem-vindo de volta</span>
     </div>
 
   </div>
 
-<nav class="navbar">
-  <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-  <a routerLink="/transferencias" routerLinkActive="active">Transferências</a>
-  <a routerLink="/extrato" routerLinkActive="active">Extrato</a>
-  <a routerLink="/investimentos" routerLinkActive="active">Investimentos</a>
-  <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
-</nav>
+  <nav class="navbar">
+    <div class="nav-links">
+      <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/transferencias" routerLinkActive="active">Transferências</a>
+      <a routerLink="/extrato" routerLinkActive="active">Extrato</a>
+      <a routerLink="/investimentos" routerLinkActive="active">Investimentos</a>
+      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+    </div>
+    <button class="btn-sair" (click)="authService.logout()">Sair</button>
+  </nav>
 
   <div class="welcome">
     <h2>Seu resumo financeiro</h2>
@@ -35,26 +38,20 @@
 
     <div class="card">
       <span class="titulo-card">Saldo atual</span>
-      <h2>R$ 12.450,90</h2>
-      <small>Atualizado agora</small>
+      <h2>R$ {{ formatarValor(usuario?.conta?.saldo ?? 0) }}</h2>
+      <small>Conta {{ usuario?.conta?.numeroConta ?? '-' }}</small>
     </div>
 
     <div class="card">
       <span class="titulo-card">Entradas</span>
-      <h2>R$ 3.200,00</h2>
-      <small>Este mês</small>
+      <h2>R$ {{ formatarValor(totalEntradas) }}</h2>
+      <small>Depósitos e recebimentos</small>
     </div>
 
     <div class="card">
       <span class="titulo-card">Saídas</span>
-      <h2>R$ 1.780,50</h2>
-      <small>Este mês</small>
-    </div>
-
-    <div class="card">
-      <span class="titulo-card">Investimentos</span>
-      <h2>R$ 8.000,00</h2>
-      <small>Carteira ativa</small>
+      <h2>R$ {{ formatarValor(totalSaidas) }}</h2>
+      <small>Saques e transferências</small>
     </div>
 
   </div>
@@ -66,11 +63,13 @@
       <div>
         <h2>Usuário do sistema</h2>
         <p>Dados do cliente logado no IF Bank</p>
+      </div>
+
+    </div>
 
     <table>
 
       <thead>
-
         <tr>
           <th>ID</th>
           <th>Nome</th>
@@ -78,27 +77,20 @@
           <th>Perfil</th>
           <th>Status</th>
         </tr>
-
       </thead>
 
       <tbody>
-
-        <tr>
-          <td>{{ usuarioLogado.id }}</td>
-          <td>{{ usuarioLogado.nome }}</td>
-          <td>{{ usuarioLogado.email }}</td>
+        <tr *ngIf="usuario">
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.nome }}</td>
+          <td>{{ usuario.email }}</td>
           <td>
-            <span class="perfil">
-              {{ usuarioLogado.perfil }}
-            </span>
+            <span class="perfil">{{ usuario.perfil }}</span>
           </td>
           <td>
-            <span class="status">
-              {{ usuarioLogado.status }}
-            </span>
+            <span class="status">{{ usuario.status }}</span>
           </td>
         </tr>
-
       </tbody>
 
     </table>

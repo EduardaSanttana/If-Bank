@@ -12,19 +12,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* DASHBOARD */
-
 .dashboard {
-
     min-height: 100vh;
-
     background: #F5F5F4;
-
     padding: 35px;
-
 }
-
-/* HEADER */
 
 .header {
 
@@ -112,8 +104,6 @@
 
 }
 
-/* NAVBAR */
-
 .navbar {
 
     margin: 25px 0;
@@ -126,13 +116,23 @@
 
     display: flex;
 
+    align-items: center;
+
+    padding: 15px 20px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+
+}
+
+.nav-links {
+
+    flex: 1;
+
+    display: flex;
+
     justify-content: center;
 
     gap: 25px;
-
-    padding: 15px;
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
 
 }
 
@@ -168,7 +168,39 @@
 
 }
 
-/* BOAS VINDAS */
+.btn-sair {
+
+    background: none;
+
+    border: 2px solid #1A1A1A;
+
+    color: #1A1A1A;
+
+    font-weight: 600;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    transition: .3s;
+
+    flex-shrink: 0;
+
+}
+
+.btn-sair:hover {
+
+    background: #1A1A1A;
+
+    color: white;
+
+}
 
 .welcome {
 

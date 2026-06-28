@@ -1,3 +1,5 @@
+import { Conta } from './conta';
+
 export interface Usuario {
   id: number;
   nome: string;
@@ -10,4 +12,5 @@ export interface Usuario {
   foto: string;
   perfil: string;
   status: string;
+  conta?: Conta;
 }

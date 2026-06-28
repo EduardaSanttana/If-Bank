@@ -1,38 +1,46 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 import { Usuario } from '../../usuario';
+import { Movimentacao } from '../../movimentacao';
 import { UsuarioService } from '../../usuario-service';
-import { RouterModule } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
   private usuarioService = inject(UsuarioService);
+  protected authService = inject(AuthService);
 
-  protected usuarios$: Observable<Usuario[]>;
+  usuario: Usuario | null = null;
+  movimentacoes: Movimentacao[] = [];
+  totalEntradas = 0;
+  totalSaidas = 0;
 
-  usuarioLogado: Usuario = {
-    id: 1,
-    nome: 'Luana Melissa',
-    cpf: '000.000.000-00',
-    dataNascimento: '2000-01-01',
-    endereco: 'Rua Exemplo, 123',
-    telefone: '(11) 99999-9999',
-    email: 'luana@email.com',
-    senha: '123456',
-    foto: '',
-    perfil: 'Cliente',
-    status: 'Ativo'
-  };
+  ngOnInit(): void {
+    const usuarioAuth = this.authService.getUsuario();
+    if (!usuarioAuth) return;
 
-  constructor() {
-    this.usuarios$ = this.usuarioService.getAll();
+    this.usuarioService.getById(usuarioAuth.id).subscribe(usuario => {
+      this.usuario = usuario;
+      this.movimentacoes = usuario.conta?.movimentacoes ?? [];
+      this.totalEntradas = this.movimentacoes
+        .filter(m => m.tipo === 'DEPOSITO' || m.tipo === 'TRANSFERENCIA_RECEBIDA')
+        .reduce((acc, m) => acc + m.valor, 0);
+      this.totalSaidas = this.movimentacoes
+        .filter(m => m.tipo === 'SAQUE' || m.tipo === 'TRANSFERENCIA_ENVIADA')
+        .reduce((acc, m) => acc + m.valor, 0);
+    });
+  }
+
+  formatarValor(valor: number): string {
+    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 }

@@ -12,7 +12,7 @@
     </div>
 
     <div class="header-right">
-      <h2>Olá, {{ usuario?.nome ?? '...' }} 👋</h2>
+      <h2>Olá, {{ usuario()?.nome ?? '...' }} 👋</h2>
       <span>Bem-vindo de volta</span>
     </div>
 
@@ -20,14 +20,45 @@
 
   <nav class="navbar">
     <div class="nav-links">
-      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
-      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'" routerLink="/transferencias" routerLinkActive="active">Transferências</a>
-      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'" routerLink="/extrato" routerLinkActive="active">Extrato</a>
-      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'" routerLink="/investimentos" routerLinkActive="active">Investimentos</a>
-      <a *ngIf="authService.getUsuario()?.perfil === 'GERENTE'" routerLink="/gerente" routerLinkActive="active">Gerente</a>
-      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+         routerLink="/dashboard"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </a>
+
+      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+         routerLink="/transferencias"
+         routerLinkActive="active">
+        Transferências
+      </a>
+
+      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+         routerLink="/extrato"
+         routerLinkActive="active">
+        Extrato
+      </a>
+
+      <a *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+         routerLink="/investimentos"
+         routerLinkActive="active">
+        Investimentos
+      </a>
+
+      <a *ngIf="authService.getUsuario()?.perfil === 'GERENTE'"
+         routerLink="/gerente"
+         routerLinkActive="active">
+        Gerente
+      </a>
+
+      <a routerLink="/perfil" routerLinkActive="active">
+        Perfil
+      </a>
     </div>
-    <button class="btn-sair" (click)="authService.logout()">Sair</button>
+
+    <button class="btn-sair" (click)="authService.logout()">
+      Sair
+    </button>
   </nav>
 
   <div class="welcome">
@@ -39,19 +70,19 @@
 
     <div class="card">
       <span class="titulo-card">Saldo atual</span>
-      <h2>R$ {{ formatarValor(usuario?.conta?.saldo ?? 0) }}</h2>
-      <small>Conta {{ usuario?.conta?.numeroConta ?? '-' }}</small>
+      <h2>R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}</h2>
+      <small>Conta {{ usuario()?.conta?.numeroConta ?? '-' }}</small>
     </div>
 
     <div class="card">
       <span class="titulo-card">Entradas</span>
-      <h2>R$ {{ formatarValor(totalEntradas) }}</h2>
+      <h2>R$ {{ formatarValor(totalEntradas()) }}</h2>
       <small>Depósitos e recebimentos</small>
     </div>
 
     <div class="card">
       <span class="titulo-card">Saídas</span>
-      <h2>R$ {{ formatarValor(totalSaidas) }}</h2>
+      <h2>R$ {{ formatarValor(totalSaidas()) }}</h2>
       <small>Saques e transferências</small>
     </div>
 
@@ -81,15 +112,15 @@
       </thead>
 
       <tbody>
-        <tr *ngIf="usuario">
-          <td>{{ usuario.id }}</td>
-          <td>{{ usuario.nome }}</td>
-          <td>{{ usuario.email }}</td>
+        <tr *ngIf="usuario()">
+          <td>{{ usuario()?.id }}</td>
+          <td>{{ usuario()?.nome }}</td>
+          <td>{{ usuario()?.email }}</td>
           <td>
-            <span class="perfil">{{ usuario.perfil }}</span>
+            <span class="perfil">{{ usuario()?.perfil }}</span>
           </td>
           <td>
-            <span class="status">{{ usuario.status }}</span>
+            <span class="status">{{ usuario()?.status }}</span>
           </td>
         </tr>
       </tbody>

@@ -1,0 +1,154 @@
+<div class="abrir-conta-page">
+
+  <div class="card">
+
+    <div class="logo">
+      <div class="logo-badge">IF</div>
+      <h1>IF Bank</h1>
+      <p>Abra sua conta em poucos minutos</p>
+    </div>
+
+    <div *ngIf="mensagem" [class]="'mensagem ' + (mensagemErro ? 'erro' : 'sucesso')">
+      {{ mensagem }}
+    </div>
+
+    <form (ngSubmit)="cadastrar()" #cadastroForm="ngForm">
+
+      <div class="form-grid">
+
+        <div class="campo campo-full">
+          <label for="nome">Nome completo</label>
+          <input
+            id="nome"
+            type="text"
+            placeholder="Seu nome completo"
+            [(ngModel)]="form.nome"
+            name="nome"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="cpf">CPF</label>
+          <input
+            id="cpf"
+            type="text"
+            placeholder="Somente números"
+            [ngModel]="form.cpf"
+            (input)="onCpfInput($event)"
+            name="cpf"
+            inputmode="numeric"
+            maxlength="11"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="dataNascimento">Data de nascimento</label>
+          <input
+            id="dataNascimento"
+            type="date"
+            [(ngModel)]="form.dataNascimento"
+            name="dataNascimento"
+            required
+          />
+        </div>
+
+        <div class="campo campo-full">
+          <label for="endereco">Endereço</label>
+          <input
+            id="endereco"
+            type="text"
+            placeholder="Rua, número, bairro, cidade"
+            [(ngModel)]="form.endereco"
+            name="endereco"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="telefone">Telefone</label>
+          <input
+            id="telefone"
+            type="text"
+            placeholder="(00) 00000-0000"
+            [(ngModel)]="form.telefone"
+            name="telefone"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="seu@email.com"
+            [(ngModel)]="form.email"
+            name="email"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="senha">Senha</label>
+          <input
+            id="senha"
+            type="password"
+            placeholder="Mínimo 6 caracteres"
+            [(ngModel)]="form.senha"
+            name="senha"
+            minlength="6"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="confirmarSenha">Confirmar senha</label>
+          <input
+            id="confirmarSenha"
+            type="password"
+            placeholder="Repita a senha"
+            [(ngModel)]="form.confirmarSenha"
+            name="confirmarSenha"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="campo campo-full">
+          <label for="foto">Foto (selfie ou documento com foto)</label>
+          <div class="upload-foto">
+            <label for="foto" class="upload-foto-botao">
+              {{ fotoSelecionada ? 'Trocar foto' : 'Selecionar foto' }}
+            </label>
+            <input
+              id="foto"
+              type="file"
+              accept="image/*"
+              (change)="onFotoSelecionada($event)"
+              name="foto"
+              hidden
+            />
+            <span class="upload-foto-nome">{{ fotoSelecionada?.name ?? 'Nenhum arquivo selecionado' }}</span>
+            <img *ngIf="previewFoto" [src]="previewFoto" alt="Pré-visualização da foto" class="upload-foto-preview" />
+          </div>
+        </div>
+
+      </div>
+
+      <button type="submit" class="btn-entrar" [disabled]="enviando">
+        {{ enviando ? 'Enviando...' : 'Abrir conta' }}
+      </button>
+
+      <p class="link-login">
+        Já tem uma conta? <a routerLink="/login">Fazer login</a>
+      </p>
+
+    </form>
+
+  </div>
+
+</div>

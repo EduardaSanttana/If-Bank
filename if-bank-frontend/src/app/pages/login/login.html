@@ -1,0 +1,55 @@
+<div class="login-page">
+
+  <div class="card">
+
+    <div class="logo">
+      <div class="logo-badge">IF</div>
+      <h1>IF Bank</h1>
+      <p>Acesse sua conta</p>
+    </div>
+
+    <div *ngIf="mensagem" class="mensagem-erro">
+      {{ mensagem }}
+    </div>
+
+    <form (ngSubmit)="entrar()" #loginForm="ngForm">
+
+      <div class="campo">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="seu@email.com"
+          [(ngModel)]="form.email"
+          name="email"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="campo">
+        <label for="senha">Senha</label>
+        <input
+          id="senha"
+          type="password"
+          placeholder="••••••••"
+          [(ngModel)]="form.senha"
+          name="senha"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn-entrar" [disabled]="carregando">
+        {{ carregando ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+    </form>
+
+    <p class="link-cadastro">
+      Ainda não tem conta? <a routerLink="/abrir-conta">Abrir conta</a>
+    </p>
+
+  </div>
+
+</div>

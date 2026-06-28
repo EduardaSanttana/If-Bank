@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-page {
+    min-height: 100vh;
+    background: #F5F5F4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 50px 45px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .12);
+    width: 100%;
+    max-width: 440px;
+    border-top: 5px solid #D6C3A5;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-badge {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #1A1A1A;
+    color: #D6C3A5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto 16px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    color: #1A1A1A;
+    margin-bottom: 6px;
+}
+
+.logo p {
+    color: #78716C;
+    font-size: 15px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1A1A1A;
+}
+
+.campo input {
+    padding: 14px 18px;
+    border: 2px solid #E5E5E5;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    transition: .3s;
+    background: #FAFAFA;
+    font-family: 'Poppins', sans-serif;
+}
+
+.campo input:focus {
+    border-color: #D6C3A5;
+    background: white;
+}
+
+.btn-entrar {
+    width: 100%;
+    background: #1A1A1A;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 8px;
+}
+
+.btn-entrar:hover:not(:disabled) {
+    background: #D6C3A5;
+    color: #1A1A1A;
+}
+
+.btn-entrar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.mensagem-erro {
+    background: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #FECACA;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.link-cadastro {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #78716C;
+}
+
+.link-cadastro a {
+    color: #1A1A1A;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.link-cadastro a:hover {
+    text-decoration: underline;
+}
+
+@media(max-width:480px) {
+    .card {
+        padding: 35px 25px;
+    }
+}

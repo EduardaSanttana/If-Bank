@@ -1,0 +1,143 @@
+<div class="gerente">
+
+  <div class="header">
+    <div class="logo-area">
+      <div class="logo-ifbank">IF</div>
+      <div class="logo-text">
+        <h1>IF Bank</h1>
+        <span>Painel do gerente</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="user-menu">
+        <button class="user-menu-trigger" (click)="toggleMenu($event)">
+          <h2>Olá, {{ authService.getUsuario()?.nome ?? '...' }} 👋</h2>
+          <span class="seta-dropdown" [class.aberta]="menuAberto()">▾</span>
+        </button>
+        <div class="dropdown-menu" *ngIf="menuAberto()">
+          <button class="btn-sair-dropdown" (click)="authService.logout()">Sair</button>
+        </div>
+      </div>
+      <span class="subtitulo">Aprovação de contas</span>
+    </div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-links">
+      <a *ngIf="authService.getUsuario()?.perfil === 'GERENTE'" routerLink="/gerente" routerLinkActive="active">Gerenciamento</a>
+      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
+    </div>
+  </nav>
+
+  <div class="welcome">
+    <h2>Aprovação de contas</h2>
+    <p>Analise as solicitações de abertura de conta recebidas pelo banco.</p>
+  </div>
+
+  <div class="abas">
+    <button [class]="'aba ' + (abaAtiva === 'pendentes' ? 'ativa' : '')" (click)="trocarAba('pendentes')">
+      Pendentes
+    </button>
+    <button [class]="'aba ' + (abaAtiva === 'historico' ? 'ativa' : '')" (click)="trocarAba('historico')">
+      Histórico
+    </button>
+  </div>
+
+  <div *ngIf="mensagem()" [class]="'mensagem ' + mensagemTipo()">
+    {{ mensagem() }}
+  </div>
+
+  <div *ngIf="carregando()" class="carregando">
+    <p>Carregando...</p>
+  </div>
+
+  <!-- ABA PENDENTES -->
+  <div *ngIf="!carregando() && abaAtiva === 'pendentes'" class="tabela-container">
+
+    <div class="topo-tabela">
+      <div>
+        <h2>Solicitações pendentes</h2>
+        <p>{{ pendentes().length }} conta(s) aguardando análise</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th>Nascimento</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of pendentes()">
+          <td>
+            <img [src]="fotoUrl(u.foto)" [alt]="u.nome" class="foto-usuario" />
+          </td>
+          <td>{{ u.nome }}</td>
+          <td>{{ u.cpf }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ formatarData(u.dataNascimento) }}</td>
+          <td class="acoes">
+            <button class="btn-aprovar" [disabled]="processandoId() === u.id" (click)="aprovar(u)">
+              {{ processandoId() === u.id ? '...' : 'Aprovar' }}
+            </button>
+            <button class="btn-rejeitar" [disabled]="processandoId() === u.id" (click)="rejeitar(u)">
+              {{ processandoId() === u.id ? '...' : 'Rejeitar' }}
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="pendentes().length === 0">
+          <td colspan="6" class="vazio">Nenhuma conta pendente de aprovação.</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- ABA HISTÓRICO -->
+  <div *ngIf="!carregando() && abaAtiva === 'historico'" class="tabela-container">
+
+    <div class="topo-tabela">
+      <div>
+        <h2>Histórico de análises</h2>
+        <p>{{ historico().length }} conta(s) já analisadas</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of historico()">
+          <td>
+            <img [src]="fotoUrl(u.foto)" [alt]="u.nome" class="foto-usuario" />
+          </td>
+          <td>{{ u.nome }}</td>
+          <td>{{ u.cpf }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            <span [class]="'status-badge ' + (u.status === 'APROVADO' ? 'aprovado' : 'rejeitado')">
+              {{ u.status === 'APROVADO' ? 'Aprovado' : 'Rejeitado' }}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="historico().length === 0">
+          <td colspan="5" class="vazio">Nenhuma conta analisada ainda.</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

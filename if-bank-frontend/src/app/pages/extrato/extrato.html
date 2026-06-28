@@ -8,8 +8,9 @@
         <span></span>
       </div>
     </div>
+
     <div class="header-right">
-      <h2>Olá, {{ usuario?.nome ?? '...' }} 👋</h2>
+      <h2>Olá, {{ usuario()?.nome ?? '...' }} 👋</h2>
       <span>Bem-vinda de volta</span>
     </div>
   </div>
@@ -23,6 +24,7 @@
       <a *ngIf="authService.getUsuario()?.perfil === 'GERENTE'" routerLink="/gerente" routerLinkActive="active">Gerente</a>
       <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
     </div>
+
     <button class="btn-sair" (click)="authService.logout()">Sair</button>
   </nav>
 
@@ -31,34 +33,42 @@
   </div>
 
   <div class="cards">
+
     <div class="card">
       <span class="titulo-card">Saldo atual</span>
-      <h2>R$ {{ formatarValor(usuario?.conta?.saldo ?? 0) }}</h2>
+      <h2>R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}</h2>
     </div>
+
     <div class="card">
       <span class="titulo-card">Total de entradas</span>
-      <h2>R$ {{ formatarValor(totalEntradas) }}</h2>
+      <h2>R$ {{ formatarValor(totalEntradas()) }}</h2>
     </div>
+
     <div class="card">
       <span class="titulo-card">Total de saídas</span>
-      <h2>R$ {{ formatarValor(totalSaidas) }}</h2>
+      <h2>R$ {{ formatarValor(totalSaidas()) }}</h2>
     </div>
+
   </div>
 
-  <div *ngIf="carregando" class="carregando">
+  <div *ngIf="carregando()" class="carregando">
     <p>Carregando movimentações...</p>
   </div>
 
-  <div *ngIf="!carregando" class="tabela-container">
+  <div *ngIf="!carregando()" class="tabela-container">
 
     <div class="topo-tabela">
       <div>
         <h2>Histórico de movimentações</h2>
-        <p>Conta {{ usuario?.conta?.numeroConta ?? '-' }} — {{ movimentacoes.length }} registros</p>
+        <p>
+          Conta {{ usuario()?.conta?.numeroConta ?? '-' }}
+          — {{ movimentacoes().length }} registros
+        </p>
       </div>
     </div>
 
     <table>
+
       <thead>
         <tr>
           <th>Tipo</th>
@@ -67,23 +77,36 @@
           <th>Data</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let mov of movimentacoes">
+
+        <tr *ngFor="let mov of movimentacoes()">
+
           <td>
             <span [class]="'tipo-badge ' + getTipoClass(mov.tipo)">
               {{ formatarTipo(mov.tipo) }}
             </span>
           </td>
+
           <td [class]="'valor-cell ' + getTipoClass(mov.tipo)">
-            {{ isSaida(mov.tipo) ? '-' : '+' }} R$ {{ formatarValor(mov.valor) }}
+            {{ isSaida(mov.tipo) ? '-' : '+' }}
+            R$ {{ formatarValor(mov.valor) }}
           </td>
+
           <td>{{ mov.descricao || '-' }}</td>
+
           <td>{{ mov.dataMovimentacao | date:'dd/MM/yyyy HH:mm' }}</td>
+
         </tr>
-        <tr *ngIf="movimentacoes.length === 0">
-          <td colspan="4" class="vazio">Nenhuma movimentação encontrada.</td>
+
+        <tr *ngIf="movimentacoes().length === 0">
+          <td colspan="4" class="vazio">
+            Nenhuma movimentação encontrada.
+          </td>
         </tr>
+
       </tbody>
+
     </table>
 
   </div>

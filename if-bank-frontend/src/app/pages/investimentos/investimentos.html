@@ -1,1 +1,195 @@
-<p>investimentos works!</p>
+<div class="investimentos">
+
+  <div class="header">
+
+    <div class="logo-area">
+      <div class="logo-ifbank">IF</div>
+
+      <div class="logo-text">
+        <h1>IF Bank</h1>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <h2>Olá, {{ usuario()?.nome ?? '...' }} 👋</h2>
+      <span>Bem-vindo de volta</span>
+    </div>
+
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-links">
+
+      <a
+        *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </a>
+
+      <a
+        *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+        routerLink="/transferencias"
+        routerLinkActive="active">
+        Transferências
+      </a>
+
+      <a
+        *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+        routerLink="/extrato"
+        routerLinkActive="active">
+        Extrato
+      </a>
+
+      <a
+        *ngIf="authService.getUsuario()?.perfil !== 'GERENTE'"
+        routerLink="/investimentos"
+        routerLinkActive="active">
+        Investimentos
+      </a>
+
+      <a
+        *ngIf="authService.getUsuario()?.perfil === 'GERENTE'"
+        routerLink="/gerente"
+        routerLinkActive="active">
+        Gerente
+      </a>
+
+      <a
+        routerLink="/perfil"
+        routerLinkActive="active">
+        Perfil
+      </a>
+
+    </div>
+
+    <button class="btn-sair" (click)="authService.logout()">
+      Sair
+    </button>
+
+  </nav>
+
+  <div class="welcome">
+
+    <h2>Seus investimentos</h2>
+
+    <p>
+      Acompanhe suas aplicações e seus rendimentos.
+    </p>
+
+  </div>
+
+    <div class="cards">
+
+        <div class="card saldo">
+            <span class="titulo-card">Saldo atual</span>
+            <h2>
+            R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}
+            </h2>
+        </div>
+
+        <div class="card investido">
+            <span class="titulo-card">Total investido</span>
+            <h2>
+            R$ {{ formatarValor(totalInvestido()) }}
+            </h2>
+        </div>
+
+        <div class="card rendimento">
+            <span class="titulo-card">Rendimento total</span>
+            <h2>
+            R$ {{ formatarValor(totalRendimento()) }}
+            </h2>
+        </div>
+
+    </div>
+
+  <div *ngIf="carregando()" class="carregando">
+
+    <p>Carregando investimentos...</p>
+
+  </div>
+
+  <div *ngIf="!carregando()" class="tabela-container">
+
+    <div class="topo-tabela">
+
+      <div>
+
+        <h2>Histórico de investimentos</h2>
+
+        <p>
+          {{ investimentos().length }} investimento(s)
+        </p>
+
+      </div>
+
+    </div>
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Tipo</th>
+
+          <th>Valor aplicado</th>
+
+          <th>Rendimento</th>
+
+          <th>Data</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let investimento of investimentos()">
+
+          <td>
+
+            {{ investimento.tipo }}
+
+          </td>
+
+          <td>
+
+            R$ {{ formatarValor(investimento.valorAplicado) }}
+
+          </td>
+
+          <td>
+
+            R$ {{ formatarValor(investimento.rendimento) }}
+
+          </td>
+
+          <td>
+
+            {{ investimento.dataAplicacao | date:'dd/MM/yyyy HH:mm' }}
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="investimentos().length === 0">
+
+          <td colspan="4" class="vazio">
+
+            Nenhum investimento encontrado.
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

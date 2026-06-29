@@ -1,0 +1,387 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.perfil {
+
+    min-height: 100vh;
+
+    background: #F5F5F4;
+
+    padding: 40px;
+
+}
+
+/*   HEADER   */
+
+.header {
+
+    background: #1A1A1A;
+
+    color: white;
+
+    border-radius: 18px;
+
+    padding: 25px 35px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    box-shadow: 0 12px 25px rgba(0, 0, 0, .15);
+
+    margin-bottom: 40px;
+
+}
+
+.logo-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+.logo-ifbank {
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #D6C3A5;
+
+    color: #1A1A1A;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+}
+
+.logo-text h1 {
+
+    font-size: 28px;
+
+}
+
+.logo-text span {
+
+    color: #D6C3A5;
+
+}
+
+.btn-voltar {
+
+    background: #D6C3A5;
+
+    color: #1A1A1A;
+
+    border: none;
+
+    padding: 12px 24px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: .3s;
+
+}
+
+.btn-voltar:hover {
+
+    transform: translateY(-3px);
+
+}
+
+/*  CARD PERFIL   */
+
+.perfil-card {
+
+    max-width: 800px;
+
+    margin: auto;
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 45px;
+
+    text-align: center;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .10);
+
+}
+
+.avatar {
+
+    width: 120px;
+
+    height: 120px;
+
+    border-radius: 50%;
+
+    background: #D6C3A5;
+
+    color: #1A1A1A;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: auto;
+
+    font-size: 48px;
+
+    font-weight: 700;
+
+    margin-bottom: 25px;
+
+}
+
+.perfil-card h2 {
+
+    color: #1A1A1A;
+
+    font-size: 34px;
+
+    margin-bottom: 8px;
+
+}
+
+.perfil-card p {
+
+    color: #78716C;
+
+    margin-bottom: 40px;
+
+}
+
+/*     DADOS     */
+
+.dados {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px;
+
+    margin-bottom: 40px;
+
+}
+
+.item {
+
+    background: #F9F9F9;
+
+    border-left: 5px solid #D6C3A5;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    text-align: left;
+
+    transition: .3s;
+
+}
+
+.item:hover {
+
+    transform: translateY(-5px);
+
+}
+
+.item span {
+
+    display: block;
+
+    color: #78716C;
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+
+}
+
+.item strong {
+
+    font-size: 20px;
+
+    color: #1A1A1A;
+
+}
+
+/*    BOTÕES   */
+
+.botoes {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+.botoes button {
+
+    padding: 14px 28px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: .3s;
+
+}
+
+.editar {
+
+    background: #1A1A1A;
+
+    color: white;
+
+}
+
+.editar:hover {
+
+    background: #000;
+
+}
+
+.senha {
+
+    background: #D6C3A5;
+
+    color: #1A1A1A;
+
+}
+
+.senha:hover {
+
+    background: #c8b18d;
+
+}
+
+.sair {
+
+    background: #B91C1C;
+
+    color: white;
+
+}
+
+.sair:hover {
+
+    background: #991B1B;
+
+}
+
+/*  RESPONSIVO   */
+
+@media(max-width:900px) {
+
+    .header {
+
+        flex-direction: column;
+
+        gap: 20px;
+
+        text-align: center;
+
+    }
+
+    .logo-area {
+
+        flex-direction: column;
+
+    }
+
+    .dados {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .perfil {
+
+        padding: 20px;
+
+    }
+
+    .perfil-card {
+
+        padding: 30px 20px;
+
+    }
+
+    .perfil-card h2 {
+
+        font-size: 28px;
+
+    }
+
+    .avatar {
+
+        width: 90px;
+
+        height: 90px;
+
+        font-size: 36px;
+
+    }
+
+    .botoes {
+
+        flex-direction: column;
+
+    }
+
+    .botoes button {
+
+        width: 100%;
+
+    }
+
+}

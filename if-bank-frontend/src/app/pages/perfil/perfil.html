@@ -1,1 +1,100 @@
-<p>perfil works!</p>
+<div class="perfil">
+
+    <header class="header">
+
+        <div class="logo-area">
+
+            <div class="logo-ifbank">
+                IF
+            </div>
+
+            <div class="logo-text">
+                <h1>IF Bank</h1>
+                <span>Meu Perfil</span>
+            </div>
+
+        </div>
+
+        <button class="btn-voltar" routerLink="/dashboard">
+            Dashboard
+        </button>
+
+    </header>
+
+    <div class="perfil-card">
+
+        <div class="avatar">
+
+            {{ usuario()?.nome?.charAt(0) }}
+
+        </div>
+
+        <h2>{{ usuario()?.nome }}</h2>
+
+        <p>{{ usuario()?.email }}</p>
+
+        <div class="dados">
+
+            <div class="item">
+
+                <span>Perfil</span>
+
+                <strong>{{ usuario()?.perfil }}</strong>
+
+            </div>
+
+            <div class="item">
+
+                <span>Status</span>
+
+                <strong>{{ usuario()?.status }}</strong>
+
+            </div>
+
+            <div class="item">
+
+                <span>Conta</span>
+
+                <strong>{{ usuario()?.conta?.numeroConta }}</strong>
+
+            </div>
+
+            <div class="item">
+
+                <span>Saldo Atual</span>
+
+                <strong>
+
+                    R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="botoes">
+
+            <button class="editar">
+
+                Editar Perfil
+
+            </button>
+
+            <button class="senha">
+
+                Alterar Senha
+
+            </button>
+
+            <button class="sair" (click)="authService.logout()">
+
+                Sair
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

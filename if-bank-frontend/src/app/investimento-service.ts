@@ -21,4 +21,14 @@ export class InvestimentoService {
         return this.http.get<Investimento[]>(`${this.url}/usuario/${id}`);
     }
 
+    buscarPorPeriodo(
+        usuarioId: number,
+        inicio: string,
+        fim: string
+    ) {
+        return this.http.get<Investimento[]>(
+            `${this.url}/usuario/${usuarioId}/periodo?inicio=${inicio}&fim=${fim}`
+        );
+    }
+
 }

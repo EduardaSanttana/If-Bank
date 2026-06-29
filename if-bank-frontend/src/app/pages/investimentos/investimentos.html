@@ -75,9 +75,7 @@
 
     <h2>Seus investimentos</h2>
 
-    <p>
-      Acompanhe suas aplicações e seus rendimentos.
-    </p>
+    <p>Acompanhe suas aplicações e seus rendimentos.</p>
 
   </div>
 
@@ -85,24 +83,41 @@
 
         <div class="card saldo">
             <span class="titulo-card">Saldo atual</span>
-            <h2>
-            R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}
-            </h2>
+            <h2>R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}</h2>
         </div>
 
         <div class="card investido">
             <span class="titulo-card">Total investido</span>
-            <h2>
-            R$ {{ formatarValor(totalInvestido()) }}
-            </h2>
+            <h2>R$ {{ formatarValor(totalInvestido()) }}</h2>
         </div>
 
         <div class="card rendimento">
             <span class="titulo-card">Rendimento total</span>
-            <h2>
-            R$ {{ formatarValor(totalRendimento()) }}
-            </h2>
+            <h2>R$ {{ formatarValor(totalRendimento()) }}</h2>
         </div>
+
+    </div>
+
+    <div class="filtro-periodo">
+
+    <div>
+
+        <label>Data inicial</label>
+
+        <input type="date" [(ngModel)]="filtroDataInicio">
+
+    </div>
+
+    <div>
+
+        <label>Data final</label>
+
+        <input type="date" [(ngModel)]="filtroDataFim">
+
+    </div>
+
+    <button class="btn-filtrar" (click)="buscarPorPeriodo()">Pesquisar</button>
+    <button class="btn-limpar" (click)="limparFiltro()">Limpar</button>
 
     </div>
 

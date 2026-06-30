@@ -82,6 +82,23 @@
       </div>
     </div>
 
+    <div class="filtro-periodo">
+
+      <div>
+          <label>Data inicial</label>
+          <input type="date" [(ngModel)]="filtroDataInicio">
+      </div>
+
+      <div>
+          <label>Data final</label>
+          <input type="date" [(ngModel)]="filtroDataFim">
+      </div>
+
+      <button class="btn-filtrar" (click)="buscarPorPeriodo()">Pesquisar</button>
+      <button class="btn-limpar" (click)="limparFiltro()">Limpar</button>
+
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -92,7 +109,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let t of transferencias()">
+        <tr *ngFor="let t of transferenciasPaginadas()">
           <td>
             <span class="conta-badge">
               {{ t.contaOrigem.numeroConta || '#' + t.contaOrigem.id }}
@@ -111,6 +128,22 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="paginacao" *ngIf="transferencias().length > 0">
+
+      <button class="btn-pagina" (click)="paginaAnterior()" [disabled]="paginaAtual() === 1">
+        Anterior
+      </button>
+
+      <span class="info-pagina">
+        Página {{ paginaAtual() }} de {{ totalPaginas() }}
+      </span>
+
+      <button class="btn-pagina" (click)="proximaPagina()" [disabled]="paginaAtual() === totalPaginas()">
+        Próxima
+      </button>
+
+    </div>
 
   </div>
 

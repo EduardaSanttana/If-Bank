@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -30,8 +30,30 @@ export class Transferencias implements OnInit {
   // quando a resposta HTTP chega (mesmo bug corrigido na tela do gerente).
   usuario = signal<Usuario | null>(null);
   contas = signal<Conta[]>([]);
+
+  // lista completa (ja filtrada pela conta do usuario), sem filtro de periodo
+  private todasTransferencias = signal<Transferencia[]>([]);
+
+  // lista apos aplicar o filtro de periodo (mesmo padrao da tela de investimentos)
   transferencias = signal<Transferencia[]>([]);
+
   carregando = signal(true);
+
+  filtroDataInicio = '';
+  filtroDataFim = '';
+
+  // paginacao, 5 por pagina
+  paginaAtual = signal(1);
+  itensPorPagina = 5;
+
+  totalPaginas = computed(() =>
+    Math.max(1, Math.ceil(this.transferencias().length / this.itensPorPagina))
+  );
+
+  transferenciasPaginadas = computed(() => {
+    const inicio = (this.paginaAtual() - 1) * this.itensPorPagina;
+    return this.transferencias().slice(inicio, inicio + this.itensPorPagina);
+  });
 
   form = {
     numeroContaOrigem: '',
@@ -68,9 +90,59 @@ export class Transferencias implements OnInit {
             t.contaOrigem.id === contaId || t.contaDestino.id === contaId
           )
         : transferencias;
+      this.todasTransferencias.set(lista);
       this.transferencias.set(lista);
+      this.filtroDataInicio = '';
+      this.filtroDataFim = '';
+      this.paginaAtual.set(1);
       this.carregando.set(false);
     });
+  }
+
+  buscarPorPeriodo(): void {
+
+    if (!this.filtroDataInicio || !this.filtroDataFim) {
+      alert('Selecione as duas datas.');
+      return;
+    }
+
+    const inicio = new Date(this.filtroDataInicio + 'T00:00:00');
+    const fim = new Date(this.filtroDataFim + 'T23:59:59');
+
+    const filtradas = this.todasTransferencias().filter(t => {
+      const data = new Date(t.dataTransferencia);
+      return data >= inicio && data <= fim;
+    });
+
+    this.transferencias.set(filtradas);
+    this.paginaAtual.set(1);
+
+  }
+
+  //limpa o filtro de data, e retorna a lista total de transferencias daquele usuario
+  limparFiltro(): void {
+
+    this.filtroDataInicio = '';
+    this.filtroDataFim = '';
+
+    this.transferencias.set(this.todasTransferencias());
+    this.paginaAtual.set(1);
+
+  }
+
+  irParaPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas()) {
+      return;
+    }
+    this.paginaAtual.set(pagina);
+  }
+
+  paginaAnterior(): void {
+    this.irParaPagina(this.paginaAtual() - 1);
+  }
+
+  proximaPagina(): void {
+    this.irParaPagina(this.paginaAtual() + 1);
   }
 
   enviar(): void {

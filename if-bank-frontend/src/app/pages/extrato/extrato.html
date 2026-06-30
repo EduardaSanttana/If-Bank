@@ -51,6 +51,23 @@
 
   </div>
 
+  <div class="filtro-periodo">
+
+    <div>
+        <label>Data inicial</label>
+        <input type="date" [(ngModel)]="filtroDataInicio">
+    </div>
+
+    <div>
+        <label>Data final</label>
+        <input type="date" [(ngModel)]="filtroDataFim">
+    </div>
+
+    <button class="btn-filtrar" (click)="buscarPorPeriodo()">Pesquisar</button>
+    <button class="btn-limpar" (click)="limparFiltro()">Limpar</button>
+
+  </div>
+
   <div *ngIf="carregando()" class="carregando">
     <p>Carregando movimentações...</p>
   </div>
@@ -80,7 +97,7 @@
 
       <tbody>
 
-        <tr *ngFor="let mov of movimentacoes()">
+        <tr *ngFor="let mov of movimentacoesPaginadas()">
 
           <td>
             <span [class]="'tipo-badge ' + getTipoClass(mov.tipo)">
@@ -108,6 +125,22 @@
       </tbody>
 
     </table>
+
+    <div class="paginacao" *ngIf="movimentacoes().length > 0">
+
+      <button class="btn-pagina" (click)="paginaAnterior()" [disabled]="paginaAtual() === 1">
+        Anterior
+      </button>
+
+      <span class="info-pagina">
+        Página {{ paginaAtual() }} de {{ totalPaginas() }}
+      </span>
+
+      <button class="btn-pagina" (click)="proximaPagina()" [disabled]="paginaAtual() === totalPaginas()">
+        Próxima
+      </button>
+
+    </div>
 
   </div>
 

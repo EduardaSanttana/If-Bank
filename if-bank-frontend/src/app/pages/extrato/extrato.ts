@@ -1,6 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { Usuario } from '../../usuario';
 import { Movimentacao } from '../../movimentacao';
@@ -10,7 +11,7 @@ import { AuthService } from '../../auth.service';
 @Component({
   selector: 'app-extrato',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './extrato.html',
   styleUrl: './extrato.css',
 })
@@ -20,10 +21,32 @@ export class Extrato implements OnInit {
   protected authService = inject(AuthService);
 
   usuario = signal<Usuario | null>(null);
+
+  // lista completa, sem filtro de periodo (vinda da conta do usuario)
+  private todasMovimentacoes = signal<Movimentacao[]>([]);
+
+  // lista apos aplicar o filtro de periodo (mesmo padrao da tela de investimentos)
   movimentacoes = signal<Movimentacao[]>([]);
+
   totalEntradas = signal(0);
   totalSaidas = signal(0);
   carregando = signal(true);
+
+  filtroDataInicio = '';
+  filtroDataFim = '';
+
+  // paginacao, 5 por pagina
+  paginaAtual = signal(1);
+  itensPorPagina = 5;
+
+  totalPaginas = computed(() =>
+    Math.max(1, Math.ceil(this.movimentacoes().length / this.itensPorPagina))
+  );
+
+  movimentacoesPaginadas = computed(() => {
+    const inicio = (this.paginaAtual() - 1) * this.itensPorPagina;
+    return this.movimentacoes().slice(inicio, inicio + this.itensPorPagina);
+  });
 
   ngOnInit(): void {
 
@@ -40,6 +63,7 @@ export class Extrato implements OnInit {
 
       const movs = usuario.conta?.movimentacoes ?? [];
 
+      this.todasMovimentacoes.set(movs);
       this.movimentacoes.set(movs);
 
       this.calcularTotais();
@@ -48,6 +72,54 @@ export class Extrato implements OnInit {
 
     });
 
+  }
+
+  buscarPorPeriodo(): void {
+
+    if (!this.filtroDataInicio || !this.filtroDataFim) {
+      alert('Selecione as duas datas.');
+      return;
+    }
+
+    const inicio = new Date(this.filtroDataInicio + 'T00:00:00');
+    const fim = new Date(this.filtroDataFim + 'T23:59:59');
+
+    const filtradas = this.todasMovimentacoes().filter(mov => {
+      const data = new Date(mov.dataMovimentacao);
+      return data >= inicio && data <= fim;
+    });
+
+    this.movimentacoes.set(filtradas);
+    this.calcularTotais();
+    this.paginaAtual.set(1);
+
+  }
+
+  //limpa o filtro de data, e retorna a lista total de movimentacoes daquele usuario
+  limparFiltro(): void {
+
+    this.filtroDataInicio = '';
+    this.filtroDataFim = '';
+
+    this.movimentacoes.set(this.todasMovimentacoes());
+    this.calcularTotais();
+    this.paginaAtual.set(1);
+
+  }
+
+  irParaPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas()) {
+      return;
+    }
+    this.paginaAtual.set(pagina);
+  }
+
+  paginaAnterior(): void {
+    this.irParaPagina(this.paginaAtual() - 1);
+  }
+
+  proximaPagina(): void {
+    this.irParaPagina(this.paginaAtual() + 1);
   }
 
   private calcularTotais(): void {

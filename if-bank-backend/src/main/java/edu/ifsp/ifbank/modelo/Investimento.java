@@ -28,7 +28,6 @@ public class Investimento {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonIgnore
     private Usuario usuario;
 
     public Long getId() {

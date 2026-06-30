@@ -198,6 +198,7 @@ export class Investimentos implements OnInit {
 
             this.form.valorAplicado = null;
 
+            this.atualizarUsuario(); 
             this.carregarInvestimentos();
 
         },
@@ -221,6 +222,22 @@ export class Investimentos implements OnInit {
     });
 
   } 
+
+  private atualizarUsuario(): void {
+
+    const usuarioAuth = this.authService.getUsuario();
+
+    if (!usuarioAuth) {
+      return;
+    }
+
+    this.usuarioService.getById(usuarioAuth.id).subscribe(usuario => {
+
+      this.usuario.set(usuario);
+
+    });
+
+  }
 
   private calcularTotais(): void {
 

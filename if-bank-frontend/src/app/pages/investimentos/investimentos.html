@@ -141,8 +141,51 @@
 
       </div>
 
+      <button class="btn-novo" (click)="mostrarFormulario.set(!mostrarFormulario())">
+          Novo investimento
+      </button>
+
     </div>
 
+    <div class="form-investimento" *ngIf="mostrarFormulario()">
+
+      <div class="campo">
+        <label>Tipo</label>
+
+        <select [(ngModel)]="form.tipo">
+
+          <option value="">Selecione</option>
+
+          <option value="CDB">CDB</option>
+
+          <option value="LCI">LCI</option>
+
+          <option value="Tesouro Direto">Tesouro Direto</option>
+
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Valor</label>
+
+        <input
+        type="number"
+        [(ngModel)]="form.valorAplicado">
+      </div>
+
+      <button class="btn-confirmar" (click)="aplicarInvestimento()">
+        Aplicar
+      </button>
+    </div>
+
+    <div
+      class="mensagem"
+      *ngIf="mensagem()"
+      [class.erro]="mensagemErro()">
+
+        {{ mensagem() }}
+    </div>
+    
     <table>
 
       <thead>

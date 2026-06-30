@@ -1,6 +1,8 @@
+import { Usuario } from "./usuario";
+
 export interface Investimento {
 
-  id: number;
+  id?: number;
 
   tipo: string;
 
@@ -9,5 +11,7 @@ export interface Investimento {
   rendimento: number;
 
   dataAplicacao: string;
+
+  usuario: Usuario;
 
 }

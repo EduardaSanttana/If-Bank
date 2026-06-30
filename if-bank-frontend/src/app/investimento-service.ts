@@ -31,4 +31,11 @@ export class InvestimentoService {
         );
     }
 
+    create(investimento: Investimento){
+        return this.http.post<Investimento>(
+            this.url,
+            investimento
+        );
+    }
+
 }

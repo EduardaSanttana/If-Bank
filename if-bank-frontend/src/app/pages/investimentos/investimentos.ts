@@ -36,7 +36,20 @@ export class Investimentos implements OnInit {
   
   filtroDataFim = '';
 
+  mostrarFormulario = signal(false);
+
+  mensagem = signal('');
+
+  mensagemErro = signal(false);
+
+  enviando = signal(false);
+
   carregando = signal(true);
+
+  form = {
+    tipo: '',
+    valorAplicado: null as number | null
+  };
 
   ngOnInit(): void {
 
@@ -137,6 +150,77 @@ export class Investimentos implements OnInit {
         });
 
   }
+
+  aplicarInvestimento(): void {
+
+    this.mensagem.set('');
+
+    if (!this.form.tipo || !this.form.valorAplicado) {
+
+        this.mensagem.set("Preencha todos os campos.");
+
+        this.mensagemErro.set(true);
+
+        return;
+    }
+
+    this.enviando.set(true);
+
+    const payload: Investimento = {
+
+      tipo: this.form.tipo,
+
+      valorAplicado: this.form.valorAplicado!,
+
+      rendimento: 0,
+
+      dataAplicacao: new Date().toISOString(),
+
+      usuario: {
+        id: this.usuario()!.id
+      } as Usuario
+
+    };
+
+    this.investimentoService.create(payload).subscribe({
+
+        next: () => {
+
+            this.mensagem.set("Investimento realizado com sucesso!");
+
+            this.mensagemErro.set(false);
+
+            this.enviando.set(false);
+
+            this.mostrarFormulario.set(false);
+
+            this.form.tipo = '';
+
+            this.form.valorAplicado = null;
+
+            this.carregarInvestimentos();
+
+        },
+
+        error: (err) => {
+
+            console.log(err);
+            this.enviando.set(false);
+
+            this.mensagemErro.set(true);
+
+            this.mensagem.set(
+
+                err.error?.message ??
+                "Erro ao realizar investimento."
+
+            );
+
+        }
+
+    });
+
+  } 
 
   private calcularTotais(): void {
 

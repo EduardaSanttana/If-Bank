@@ -34,13 +34,22 @@
 
         <div class="avatar">
 
-            {{ usuario()?.nome?.charAt(0) }}
+            <img
+                *ngIf="usuario()?.foto"
+                [src]="getFotoPerfil()"
+                alt="Foto do usuário">
+
+            <span *ngIf="!usuario()?.foto">
+                {{ usuario()?.nome?.charAt(0) }}
+            </span>
 
         </div>
 
         <ng-container *ngIf="!editando()">
 
             <h2>{{ usuario()?.nome }}</h2>
+
+            <p>{{ getFotoPerfil() }}</p>
 
             <p>{{ usuario()?.email }}</p>
 

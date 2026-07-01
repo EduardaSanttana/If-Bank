@@ -59,6 +59,19 @@ export class Perfil implements OnInit {
     this.menuAberto.set(false);
   }
 
+
+  getFotoPerfil(): string {
+
+    const foto = this.usuario()?.foto;
+
+    if (!foto) {
+      return '';
+    }
+
+    return `http://localhost:8081/${foto}`;
+
+  }
+
   abrirEdicao(): void {
 
     const usuario = this.usuario();

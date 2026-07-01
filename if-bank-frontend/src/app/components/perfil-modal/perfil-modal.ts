@@ -32,6 +32,16 @@ export class PerfilModal {
     this.fechar.emit();
   }
 
+  getFotoPerfil(): string {
+
+    if (!this.usuario?.foto) {
+      return '';
+    }
+
+    return `http://localhost:8081/${this.usuario.foto}`;
+
+  }
+
   abrirEdicao(): void {
 
     if (!this.usuario) {

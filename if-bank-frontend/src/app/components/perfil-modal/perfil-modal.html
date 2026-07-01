@@ -4,7 +4,18 @@
 
     <ng-container *ngIf="!editando()">
 
-      <div class="modal-avatar">{{ (usuario?.nome?.charAt(0) ?? 'U').toUpperCase() }}</div>
+      <div class="modal-avatar">
+
+        <img
+          *ngIf="usuario?.foto"
+          [src]="getFotoPerfil()"
+          alt="Foto do usuário">
+
+        <span *ngIf="!usuario?.foto">
+          {{ (usuario?.nome?.charAt(0) ?? 'U').toUpperCase() }}
+        </span>
+
+      </div>
       <h2 class="modal-nome">{{ usuario?.nome }}</h2>
       <p class="modal-email">{{ usuario?.email }}</p>
 

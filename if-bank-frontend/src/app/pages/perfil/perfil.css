@@ -22,7 +22,6 @@
 
 }
 
-/*   HEADER   */
 
 .header {
 
@@ -181,7 +180,6 @@
     background: #FEE2E2;
 }
 
-/*  CARD PERFIL   */
 
 .perfil-card {
 
@@ -247,7 +245,6 @@
 
 }
 
-/*     DADOS     */
 
 .dados {
 
@@ -303,7 +300,6 @@
 
 }
 
-/*  FORM EDIÇÃO   */
 
 .form-edicao {
     text-align: left;
@@ -349,7 +345,6 @@
     font-weight: 500;
 }
 
-/*    BOTÕES   */
 
 .botoes {
 
@@ -431,7 +426,6 @@
 
 }
 
-/*  RESPONSIVO   */
 
 @media(max-width:900px) {
 

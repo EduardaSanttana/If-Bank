@@ -10,11 +10,12 @@ import { ContaService } from '../../conta-service';
 import { Usuario } from '../../usuario';
 import { UsuarioService } from '../../usuario-service';
 import { AuthService } from '../../auth.service';
+import { PerfilModal } from '../../components/perfil-modal/perfil-modal';
 
 @Component({
   selector: 'app-transferencias',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PerfilModal],
   templateUrl: './transferencias.html',
   styleUrl: './transferencias.css',
 })
@@ -219,6 +220,11 @@ export class Transferencias implements OnInit {
 
   fecharPerfil(): void {
     this.perfilAberto.set(false);
+  }
+
+  onUsuarioAtualizado(usuario: Usuario): void {
+    this.usuario.set(usuario);
+    this.authService.atualizarUsuario(usuario);
   }
 
   @HostListener('document:click')

@@ -218,33 +218,9 @@
 
 </div>
 
-<div class="modal-overlay" *ngIf="perfilAberto()" (click)="fecharPerfil()">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-    <button class="modal-fechar" (click)="fecharPerfil()">✕</button>
-    <div class="modal-avatar">{{ (usuario()?.nome?.charAt(0) ?? 'U').toUpperCase() }}</div>
-    <h2 class="modal-nome">{{ usuario()?.nome }}</h2>
-    <p class="modal-email">{{ usuario()?.email }}</p>
-    <div class="modal-dados">
-      <div class="modal-item">
-        <span>Perfil</span>
-        <strong>{{ usuario()?.perfil }}</strong>
-      </div>
-      <div class="modal-item">
-        <span>Status</span>
-        <strong>{{ usuario()?.status }}</strong>
-      </div>
-      <div class="modal-item">
-        <span>Conta</span>
-        <strong>{{ usuario()?.conta?.numeroConta ?? '-' }}</strong>
-      </div>
-      <div class="modal-item">
-        <span>Saldo Atual</span>
-        <strong>R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}</strong>
-      </div>
-    </div>
-    <div class="modal-botoes">
-      <button class="modal-btn-editar">Editar Perfil</button>
-      <button class="modal-btn-senha">Alterar Senha</button>
-    </div>
-  </div>
-</div>
+<app-perfil-modal
+  *ngIf="perfilAberto()"
+  [usuario]="usuario()"
+  (fechar)="fecharPerfil()"
+  (usuarioAtualizado)="onUsuarioAtualizado($event)">
+</app-perfil-modal>

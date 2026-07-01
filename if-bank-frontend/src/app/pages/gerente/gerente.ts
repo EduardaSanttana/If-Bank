@@ -5,13 +5,14 @@ import { RouterModule } from '@angular/router';
 import { Usuario } from '../../usuario';
 import { UsuarioService } from '../../usuario-service';
 import { AuthService } from '../../auth.service';
+import { PerfilModal } from '../../components/perfil-modal/perfil-modal';
 
 type Aba = 'pendentes' | 'historico';
 
 @Component({
   selector: 'app-gerente',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PerfilModal],
   templateUrl: './gerente.html',
   styleUrl: './gerente.css',
 })
@@ -130,6 +131,10 @@ export class Gerente implements OnInit {
 
   fecharPerfil(): void {
     this.perfilAberto.set(false);
+  }
+
+  onUsuarioAtualizado(usuario: Usuario): void {
+    this.authService.atualizarUsuario(usuario);
   }
 
   @HostListener('document:click')

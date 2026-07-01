@@ -6,11 +6,12 @@ import { Usuario } from '../../usuario';
 import { Movimentacao } from '../../movimentacao';
 import { UsuarioService } from '../../usuario-service';
 import { AuthService } from '../../auth.service';
+import { PerfilModal } from '../../components/perfil-modal/perfil-modal';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PerfilModal],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -71,6 +72,11 @@ export class Dashboard implements OnInit {
 
   fecharPerfil(): void {
     this.perfilAberto.set(false);
+  }
+
+  onUsuarioAtualizado(usuario: Usuario): void {
+    this.usuario.set(usuario);
+    this.authService.atualizarUsuario(usuario);
   }
 
   @HostListener('document:click')

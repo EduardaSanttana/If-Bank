@@ -7,11 +7,12 @@ import { Usuario } from '../../usuario';
 import { Movimentacao } from '../../movimentacao';
 import { UsuarioService } from '../../usuario-service';
 import { AuthService } from '../../auth.service';
+import { PerfilModal } from '../../components/perfil-modal/perfil-modal';
 
 @Component({
   selector: 'app-extrato',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PerfilModal],
   templateUrl: './extrato.html',
   styleUrl: './extrato.css',
 })
@@ -175,6 +176,11 @@ export class Extrato implements OnInit {
 
   fecharPerfil(): void {
     this.perfilAberto.set(false);
+  }
+
+  onUsuarioAtualizado(usuario: Usuario): void {
+    this.usuario.set(usuario);
+    this.authService.atualizarUsuario(usuario);
   }
 
   @HostListener('document:click')

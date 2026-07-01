@@ -1,0 +1,81 @@
+<div class="modal-overlay" (click)="fecharModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <button class="modal-fechar" (click)="fecharModal()">✕</button>
+
+    <ng-container *ngIf="!editando()">
+
+      <div class="modal-avatar">{{ (usuario?.nome?.charAt(0) ?? 'U').toUpperCase() }}</div>
+      <h2 class="modal-nome">{{ usuario?.nome }}</h2>
+      <p class="modal-email">{{ usuario?.email }}</p>
+
+      <div class="modal-dados">
+        <div class="modal-item">
+          <span>Perfil</span>
+          <strong>{{ usuario?.perfil }}</strong>
+        </div>
+        <div class="modal-item">
+          <span>Status</span>
+          <strong>{{ usuario?.status }}</strong>
+        </div>
+        <div class="modal-item">
+          <span>Telefone</span>
+          <strong>{{ usuario?.telefone }}</strong>
+        </div>
+        <div class="modal-item">
+          <span>Endereço</span>
+          <strong>{{ usuario?.endereco }}</strong>
+        </div>
+        <div class="modal-item" *ngIf="usuario?.conta">
+          <span>Conta</span>
+          <strong>{{ usuario?.conta?.numeroConta ?? '-' }}</strong>
+        </div>
+        <div class="modal-item" *ngIf="usuario?.conta">
+          <span>Saldo Atual</span>
+          <strong>R$ {{ formatarValor(usuario?.conta?.saldo ?? 0) }}</strong>
+        </div>
+      </div>
+
+      <div class="modal-botoes">
+        <button class="modal-btn-editar" (click)="abrirEdicao()">Editar Perfil</button>
+        <button class="modal-btn-senha">Alterar Senha</button>
+      </div>
+
+    </ng-container>
+
+    <form *ngIf="editando()" class="form-edicao" (ngSubmit)="salvarEdicao()" #edicaoForm="ngForm">
+
+      <div *ngIf="mensagemErro()" class="mensagem-erro">
+        {{ mensagemErro() }}
+      </div>
+
+      <div class="campo">
+        <label for="modalNome">Nome completo</label>
+        <input id="modalNome" type="text" [(ngModel)]="form.nome" name="nome" required />
+      </div>
+
+      <div class="campo">
+        <label for="modalEmail">Email</label>
+        <input id="modalEmail" type="email" [(ngModel)]="form.email" name="email" required />
+      </div>
+
+      <div class="campo">
+        <label for="modalTelefone">Telefone</label>
+        <input id="modalTelefone" type="text" [(ngModel)]="form.telefone" name="telefone" required />
+      </div>
+
+      <div class="campo">
+        <label for="modalEndereco">Endereço</label>
+        <input id="modalEndereco" type="text" [(ngModel)]="form.endereco" name="endereco" required />
+      </div>
+
+      <div class="modal-botoes">
+        <button type="submit" class="modal-btn-editar" [disabled]="salvando() || edicaoForm.invalid">
+          {{ salvando() ? 'Salvando...' : 'Salvar' }}
+        </button>
+        <button type="button" class="modal-btn-senha" (click)="cancelarEdicao()">Cancelar</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

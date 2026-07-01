@@ -140,25 +140,9 @@
 
 </div>
 
-<div class="modal-overlay" *ngIf="perfilAberto()" (click)="fecharPerfil()">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-    <button class="modal-fechar" (click)="fecharPerfil()">✕</button>
-    <div class="modal-avatar">{{ (authService.getUsuario()?.nome?.charAt(0) ?? 'G').toUpperCase() }}</div>
-    <h2 class="modal-nome">{{ authService.getUsuario()?.nome }}</h2>
-    <p class="modal-email">{{ authService.getUsuario()?.email }}</p>
-    <div class="modal-dados">
-      <div class="modal-item">
-        <span>Perfil</span>
-        <strong>{{ authService.getUsuario()?.perfil }}</strong>
-      </div>
-      <div class="modal-item">
-        <span>Status</span>
-        <strong>{{ authService.getUsuario()?.status }}</strong>
-      </div>
-    </div>
-    <div class="modal-botoes">
-      <button class="modal-btn-editar">Editar Perfil</button>
-      <button class="modal-btn-senha">Alterar Senha</button>
-    </div>
-  </div>
-</div>
+<app-perfil-modal
+  *ngIf="perfilAberto()"
+  [usuario]="authService.getUsuario()"
+  (fechar)="fecharPerfil()"
+  (usuarioAtualizado)="onUsuarioAtualizado($event)">
+</app-perfil-modal>

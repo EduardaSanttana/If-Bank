@@ -23,6 +23,10 @@ export class UsuarioService {
     return this.http.get<Usuario>(`${this.url}/${id}`);
   }
 
+  atualizar(id: number, dados: { nome: string; endereco: string; telefone: string; email: string }): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.url}/${id}`, dados);
+  }
+
   cadastrar(dados: CadastroUsuario, foto: File): Observable<Usuario> {
     const formData = new FormData();
 

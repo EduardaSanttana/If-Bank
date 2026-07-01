@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.ifsp.ifbank.api.dto.AtualizarUsuarioRequest;
 import edu.ifsp.ifbank.api.dto.CadastroUsuarioRequest;
 import edu.ifsp.ifbank.exception.NegocioException;
 import edu.ifsp.ifbank.modelo.Usuario;
@@ -99,6 +101,26 @@ public class UsuarioRestController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public Usuario atualizar(@PathVariable("id") Long id, @Valid @RequestBody AtualizarUsuarioRequest dados) {
+
+        Usuario usuario = repo.findById(id)
+                .orElseThrow(() -> new NegocioException("Usuário não encontrado."));
+
+        repo.findByEmail(dados.getEmail())
+                .filter(outro -> !outro.getId().equals(id))
+                .ifPresent(outro -> {
+                    throw new NegocioException("Este e-mail já está em uso por outro usuário.");
+                });
+
+        usuario.setNome(dados.getNome());
+        usuario.setEndereco(dados.getEndereco());
+        usuario.setTelefone(dados.getTelefone());
+        usuario.setEmail(dados.getEmail());
+
+        return repo.save(usuario);
     }
 
     @PostMapping(path = "/login", consumes = "application/json")

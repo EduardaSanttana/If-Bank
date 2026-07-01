@@ -38,71 +38,131 @@
 
         </div>
 
-        <h2>{{ usuario()?.nome }}</h2>
+        <ng-container *ngIf="!editando()">
 
-        <p>{{ usuario()?.email }}</p>
+            <h2>{{ usuario()?.nome }}</h2>
 
-        <div class="dados">
+            <p>{{ usuario()?.email }}</p>
 
-            <div class="item">
+            <div class="dados">
 
-                <span>Perfil</span>
+                <div class="item">
 
-                <strong>{{ usuario()?.perfil }}</strong>
+                    <span>Perfil</span>
+
+                    <strong>{{ usuario()?.perfil }}</strong>
+
+                </div>
+
+                <div class="item">
+
+                    <span>Status</span>
+
+                    <strong>{{ usuario()?.status }}</strong>
+
+                </div>
+
+                <div class="item">
+
+                    <span>Telefone</span>
+
+                    <strong>{{ usuario()?.telefone }}</strong>
+
+                </div>
+
+                <div class="item">
+
+                    <span>Endereço</span>
+
+                    <strong>{{ usuario()?.endereco }}</strong>
+
+                </div>
+
+                <div class="item">
+
+                    <span>Conta</span>
+
+                    <strong>{{ usuario()?.conta?.numeroConta }}</strong>
+
+                </div>
+
+                <div class="item">
+
+                    <span>Saldo Atual</span>
+
+                    <strong>
+
+                        R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}
+
+                    </strong>
+
+                </div>
 
             </div>
 
-            <div class="item">
+            <div class="botoes">
 
-                <span>Status</span>
+                <button class="editar" (click)="abrirEdicao()">
 
-                <strong>{{ usuario()?.status }}</strong>
+                    Editar Perfil
 
-            </div>
+                </button>
 
-            <div class="item">
+                <button class="senha">
 
-                <span>Conta</span>
+                    Alterar Senha
 
-                <strong>{{ usuario()?.conta?.numeroConta }}</strong>
+                </button>
 
-            </div>
+                <button class="sair" (click)="authService.logout()">
 
-            <div class="item">
+                    Sair
 
-                <span>Saldo Atual</span>
-
-                <strong>
-
-                    R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}
-
-                </strong>
+                </button>
 
             </div>
 
-        </div>
+        </ng-container>
 
-        <div class="botoes">
+        <form *ngIf="editando()" class="form-edicao" (ngSubmit)="salvarEdicao()" #edicaoForm="ngForm">
 
-            <button class="editar">
+            <div *ngIf="mensagemErro()" class="mensagem-erro">
+                {{ mensagemErro() }}
+            </div>
 
-                Editar Perfil
+            <div class="campo">
+                <label for="nome">Nome completo</label>
+                <input id="nome" type="text" [(ngModel)]="form.nome" name="nome" required />
+            </div>
 
-            </button>
+            <div class="campo">
+                <label for="email">Email</label>
+                <input id="email" type="email" [(ngModel)]="form.email" name="email" required />
+            </div>
 
-            <button class="senha">
+            <div class="campo">
+                <label for="telefone">Telefone</label>
+                <input id="telefone" type="text" [(ngModel)]="form.telefone" name="telefone" required />
+            </div>
 
-                Alterar Senha
+            <div class="campo">
+                <label for="endereco">Endereço</label>
+                <input id="endereco" type="text" [(ngModel)]="form.endereco" name="endereco" required />
+            </div>
 
-            </button>
+            <div class="botoes">
 
-            <button class="sair" (click)="authService.logout()">
+                <button type="submit" class="editar" [disabled]="salvando() || edicaoForm.invalid">
+                    {{ salvando() ? 'Salvando...' : 'Salvar' }}
+                </button>
 
-                Sair
+                <button type="button" class="sair" (click)="cancelarEdicao()">
+                    Cancelar
+                </button>
 
-            </button>
+            </div>
 
-        </div>
+        </form>
 
     </div>
 

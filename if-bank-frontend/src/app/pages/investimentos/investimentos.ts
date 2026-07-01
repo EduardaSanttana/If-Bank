@@ -9,11 +9,12 @@ import { Investimento } from '../../investimento';
 import { UsuarioService } from '../../usuario-service';
 import { InvestimentoService } from '../../investimento-service';
 import { AuthService } from '../../auth.service';
+import { PerfilModal } from '../../components/perfil-modal/perfil-modal';
 
 @Component({
   selector: 'app-investimentos',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, PerfilModal],
   templateUrl: './investimentos.html',
   styleUrl: './investimentos.css',
 })
@@ -277,6 +278,11 @@ export class Investimentos implements OnInit {
 
   fecharPerfil(): void {
     this.perfilAberto.set(false);
+  }
+
+  onUsuarioAtualizado(usuario: Usuario): void {
+    this.usuario.set(usuario);
+    this.authService.atualizarUsuario(usuario);
   }
 
   @HostListener('document:click')

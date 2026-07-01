@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -28,6 +28,18 @@ export class Investimentos implements OnInit {
   usuario = signal<Usuario | null>(null);
 
   investimentos = signal<Investimento[]>([]);
+
+  paginaAtual = signal(1);
+  itensPorPagina = 5;
+
+  totalPaginas = computed(() =>
+    Math.max(1, Math.ceil(this.investimentos().length / this.itensPorPagina))
+  );
+
+  investimentosPaginados = computed(() => {
+    const inicio = (this.paginaAtual() - 1) * this.itensPorPagina;
+    return this.investimentos().slice(inicio, inicio + this.itensPorPagina);
+  });
 
   totalInvestido = signal(0);
 
@@ -88,6 +100,7 @@ export class Investimentos implements OnInit {
       this.investimentos.set(lista);
 
       this.calcularTotais();
+      this.paginaAtual.set(1);
 
       this.carregando.set(false);
 
@@ -122,6 +135,8 @@ export class Investimentos implements OnInit {
 
         this.calcularTotais();
 
+        this.paginaAtual.set(1);
+
         this.carregando.set(false);
 
       });
@@ -146,11 +161,27 @@ export class Investimentos implements OnInit {
         .subscribe(lista => {
 
           this.investimentos.set(lista);
-
+          this.paginaAtual.set(1);
           this.carregando.set(false);
 
         });
 
+  }
+
+  irParaPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas()) {
+      return;
+    }
+
+    this.paginaAtual.set(pagina);
+  }
+
+  paginaAnterior(): void {
+    this.irParaPagina(this.paginaAtual() - 1);
+  }
+
+  proximaPagina(): void {
+    this.irParaPagina(this.paginaAtual() + 1);
   }
 
   aplicarInvestimento(): void {

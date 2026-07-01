@@ -172,7 +172,7 @@
 
       <tbody>
 
-        <tr *ngFor="let investimento of investimentos()">
+        <tr *ngFor="let investimento of investimentosPaginados()">
 
           <td>
 
@@ -214,6 +214,31 @@
 
     </table>
 
+    <div class="paginacao" *ngIf="investimentos().length > 0">
+
+      <button
+        class="btn-pagina"
+        (click)="paginaAnterior()"
+        [disabled]="paginaAtual() === 1">
+
+        Anterior
+
+      </button>
+
+      <span class="info-pagina">
+        Página {{ paginaAtual() }} de {{ totalPaginas() }}
+      </span>
+
+      <button
+        class="btn-pagina"
+        (click)="proximaPagina()"
+        [disabled]="paginaAtual() === totalPaginas()">
+
+        Próxima
+
+      </button>
+
+      </div>    
   </div>
 
 </div>

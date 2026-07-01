@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -21,21 +21,18 @@ export class Extrato implements OnInit {
   protected authService = inject(AuthService);
 
   usuario = signal<Usuario | null>(null);
-
-  // lista completa, sem filtro de periodo (vinda da conta do usuario)
   private todasMovimentacoes = signal<Movimentacao[]>([]);
-
-  // lista apos aplicar o filtro de periodo (mesmo padrao da tela de investimentos)
   movimentacoes = signal<Movimentacao[]>([]);
 
   totalEntradas = signal(0);
   totalSaidas = signal(0);
   carregando = signal(true);
+  menuAberto = signal(false);
+  perfilAberto = signal(false);
 
   filtroDataInicio = '';
   filtroDataFim = '';
 
-  // paginacao, 5 por pagina
   paginaAtual = signal(1);
   itensPorPagina = 5;
 
@@ -95,7 +92,6 @@ export class Extrato implements OnInit {
 
   }
 
-  //limpa o filtro de data, e retorna a lista total de movimentacoes daquele usuario
   limparFiltro(): void {
 
     this.filtroDataInicio = '';
@@ -164,6 +160,26 @@ export class Extrato implements OnInit {
 
   isSaida(tipo: string): boolean {
     return tipo === 'SAQUE' || tipo === 'TRANSFERENCIA_ENVIADA';
+  }
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(!this.menuAberto());
+  }
+
+  abrirPerfil(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(false);
+    this.perfilAberto.set(true);
+  }
+
+  fecharPerfil(): void {
+    this.perfilAberto.set(false);
+  }
+
+  @HostListener('document:click')
+  fecharMenu(): void {
+    this.menuAberto.set(false);
   }
 
 }

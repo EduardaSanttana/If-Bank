@@ -23,11 +23,6 @@ export class UsuarioService {
     return this.http.get<Usuario>(`${this.url}/${id}`);
   }
 
-  /**
-   * Abertura de conta (requisito 1): envia os dados pessoais e a foto
-   * como multipart/form-data. A conta criada nasce com status PENDENTE,
-   * aguardando aprovação do gerente.
-   */
   cadastrar(dados: CadastroUsuario, foto: File): Observable<Usuario> {
     const formData = new FormData();
 
@@ -43,10 +38,6 @@ export class UsuarioService {
     return this.http.post<Usuario>(`${this.url}/cadastro`, formData);
   }
 
-  /**
-   * Aprovação de abertura de contas (requisito 6), acessível somente ao
-   * perfil GERENTE.
-   */
   listarPendentes(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`${this.url}/pendentes`);
   }

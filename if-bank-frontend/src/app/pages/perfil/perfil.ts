@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -22,6 +22,7 @@ export class Perfil implements OnInit {
   protected authService = inject(AuthService);
 
   usuario = signal<Usuario | null>(null);
+  menuAberto = signal(false);
 
   ngOnInit(): void {
 
@@ -38,6 +39,16 @@ export class Perfil implements OnInit {
 
       });
 
+  }
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(!this.menuAberto());
+  }
+
+  @HostListener('document:click')
+  fecharMenu(): void {
+    this.menuAberto.set(false);
   }
 
   formatarValor(valor: number): string {

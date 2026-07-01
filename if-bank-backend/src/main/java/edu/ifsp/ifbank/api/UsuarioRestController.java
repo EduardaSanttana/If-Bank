@@ -35,102 +35,94 @@ import jakarta.validation.Valid;
 @Validated
 public class UsuarioRestController {
 
-	@Autowired
-	private UsuarioRepositorio repo;
+    @Autowired
+    private UsuarioRepositorio repo;
 
-	@Autowired
-	private AbrirContaService abrirContaService;
+    @Autowired
+    private AbrirContaService abrirContaService;
 
-	@Autowired
-	private AprovacaoContaService aprovacaoContaService;
+    @Autowired
+    private AprovacaoContaService aprovacaoContaService;
 
-	@GetMapping
-	public List<Usuario> getAll() {
-		return repo.findAll();
-	}
+    @GetMapping
+    public List<Usuario> getAll() {
+        return repo.findAll();
+    }
 
-	@PostMapping(consumes = "application/json")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario save(@RequestBody Usuario usuario) {
-		return repo.save(usuario);
-	}
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Usuario save(@RequestBody Usuario usuario) {
+        return repo.save(usuario);
+    }
 
-	/**
-	 * Abertura de conta (requisito 1): cadastro de dados pessoais + foto.
-	 * A conta criada nasce com status PENDENTE, aguardando aprovacao do gerente.
-	 */
-	@PostMapping(path = "/cadastro", consumes = "multipart/form-data")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario abrirConta(@Valid @ModelAttribute CadastroUsuarioRequest dados,
-							   @RequestParam("foto") MultipartFile foto) {
-		return abrirContaService.abrirConta(dados, foto);
-	}
+    @PostMapping(path = "/cadastro", consumes = "multipart/form-data")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Usuario abrirConta(
+            @Valid @ModelAttribute CadastroUsuarioRequest dados,
+            @RequestParam("foto") MultipartFile foto) {
 
-	/**
-	 * Aprovacao de abertura de contas (requisito 6), acessivel somente ao
-	 * perfil GERENTE. A restricao de perfil deve ser validada no frontend
-	 * (rota protegida) e idealmente tambem aqui caso seja adicionada
-	 * autenticacao real no futuro.
-	 */
-	@GetMapping("/pendentes")
-	public List<Usuario> listarPendentes() {
-		return aprovacaoContaService.listarPendentes();
-	}
+        return abrirContaService.abrirConta(dados, foto);
+    }
 
-	@GetMapping("/historico-aprovacao")
-	public List<Usuario> listarHistoricoAprovacao() {
-		return aprovacaoContaService.listarHistorico();
-	}
+    @GetMapping("/pendentes")
+    public List<Usuario> listarPendentes() {
+        return aprovacaoContaService.listarPendentes();
+    }
 
-	@PatchMapping("/{id}/aprovar")
-	public Usuario aprovar(@PathVariable Long id) {
-		return aprovacaoContaService.aprovar(id);
-	}
+    @GetMapping("/historico-aprovacao")
+    public List<Usuario> listarHistoricoAprovacao() {
+        return aprovacaoContaService.listarHistorico();
+    }
 
-	@PatchMapping("/{id}/rejeitar")
-	public Usuario rejeitar(@PathVariable Long id) {
-		return aprovacaoContaService.rejeitar(id);
-	}
+    @PatchMapping("/{id}/aprovar")
+    public Usuario aprovar(@PathVariable("id") Long id) {
+        return aprovacaoContaService.aprovar(id);
+    }
 
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable(name = "id") Long id) {
-		repo.deleteById(id);
-	}
+    @PatchMapping("/{id}/rejeitar")
+    public Usuario rejeitar(@PathVariable("id") Long id) {
+        return aprovacaoContaService.rejeitar(id);
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> findById(@PathVariable(name = "id") Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        repo.deleteById(id);
+    }
 
-		Optional<Usuario> opt = repo.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> findById(@PathVariable("id") Long id) {
 
-		if (opt.isPresent()) {
-			return ResponseEntity.ok(opt.get());
-		}
+        Optional<Usuario> opt = repo.findById(id);
 
-		return ResponseEntity.notFound().build();
-	}
+        if (opt.isPresent()) {
+            return ResponseEntity.ok(opt.get());
+        }
 
-	@PostMapping(path = "/login", consumes = "application/json")
-	public ResponseEntity<Usuario> login(@RequestBody Map<String, String> credenciais) {
+        return ResponseEntity.notFound().build();
+    }
 
-		String email = credenciais.get("email");
-		String senha = credenciais.get("senha");
+    @PostMapping(path = "/login", consumes = "application/json")
+    public ResponseEntity<Usuario> login(@RequestBody Map<String, String> credenciais) {
 
-		Optional<Usuario> opt = repo.findByEmail(email);
+        String email = credenciais.get("email");
+        String senha = credenciais.get("senha");
 
-		if (opt.isEmpty() || !opt.get().getSenha().equals(senha)) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
+        Optional<Usuario> opt = repo.findByEmail(email);
 
-		Usuario usuario = opt.get();
+        if (opt.isEmpty() || !opt.get().getSenha().equals(senha)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-		if (usuario.getStatus() == StatusUsuario.PENDENTE) {
-			throw new NegocioException("Sua conta ainda está pendente de aprovação pelo gerente.");
-		}
+        Usuario usuario = opt.get();
 
-		if (usuario.getStatus() == StatusUsuario.REJEITADO) {
-			throw new NegocioException("Sua abertura de conta foi rejeitada. Procure o banco para mais informações.");
-		}
+        if (usuario.getStatus() == StatusUsuario.PENDENTE) {
+            throw new NegocioException("Sua conta ainda está pendente de aprovação pelo gerente.");
+        }
 
-		return ResponseEntity.ok(usuario);
-	}
+        if (usuario.getStatus() == StatusUsuario.REJEITADO) {
+            throw new NegocioException("Sua abertura de conta foi rejeitada. Procure o banco para mais informações.");
+        }
+
+        return ResponseEntity.ok(usuario);
+    }
 }

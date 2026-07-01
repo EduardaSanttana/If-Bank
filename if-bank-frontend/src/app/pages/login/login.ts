@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -18,8 +18,8 @@ export class Login implements OnInit {
   private router = inject(Router);
 
   form = { email: '', senha: '' };
-  mensagem = '';
-  carregando = false;
+  mensagem = signal('');
+  carregando = signal(false);
 
   ngOnInit(): void {
     if (this.authService.isLogado()) {
@@ -29,22 +29,22 @@ export class Login implements OnInit {
   }
 
   entrar(): void {
-    this.mensagem = '';
+    this.mensagem.set('');
 
     if (!this.form.email || !this.form.senha) {
-      this.mensagem = 'Preencha email e senha.';
+      this.mensagem.set('Preencha email e senha.');
       return;
     }
 
-    this.carregando = true;
+    this.carregando.set(true);
 
     this.authService.login(this.form.email, this.form.senha).subscribe({
       next: (usuario) => {
         this.router.navigate([usuario?.perfil === 'GERENTE' ? '/gerente' : '/dashboard']);
       },
       error: (erro) => {
-        this.mensagem = erro?.error?.mensagem ?? 'Email ou senha inválidos.';
-        this.carregando = false;
+        this.mensagem.set(erro?.error?.mensagem ?? 'Email ou senha inválidos.');
+        this.carregando.set(false);
       },
     });
   }

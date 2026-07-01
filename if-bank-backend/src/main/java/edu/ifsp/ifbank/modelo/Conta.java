@@ -26,7 +26,7 @@ public class Conta {
     @JsonIgnore
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "conta")
+    @OneToMany(mappedBy = "conta", fetch = FetchType.EAGER)
     private List<Movimentacao> movimentacoes;
 
     public Long getId() {

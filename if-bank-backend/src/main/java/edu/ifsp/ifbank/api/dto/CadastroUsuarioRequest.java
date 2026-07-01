@@ -10,10 +10,6 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * Dados recebidos no formulario de abertura de conta (requisito 1).
- * A foto chega como MultipartFile separado, nao faz parte deste DTO.
- */
 public class CadastroUsuarioRequest {
 
     @NotBlank(message = "O nome é obrigatório.")

@@ -12,8 +12,17 @@
     </div>
 
     <div class="header-right">
-      <h2>Olá, {{ usuario()?.nome ?? '...' }} 👋</h2>
-      <span>Bem-vindo de volta</span>
+      <div class="user-menu">
+        <button class="user-menu-trigger" (click)="toggleMenu($event)">
+          <span class="nome-usuario">Olá, {{ usuario()?.nome ?? '...' }} 👋</span>
+          <span class="seta-dropdown" [class.aberta]="menuAberto()">▾</span>
+        </button>
+        <div class="dropdown-menu" *ngIf="menuAberto()">
+          <button class="dropdown-item" (click)="abrirPerfil($event)">Perfil</button>
+          <button class="btn-sair-dropdown" (click)="authService.logout()">Sair</button>
+        </div>
+      </div>
+      <span class="subtitulo">Bem-vindo de volta</span>
     </div>
 
   </div>
@@ -50,15 +59,7 @@
          routerLinkActive="active">
         Gerente
       </a>
-
-      <a routerLink="/perfil" routerLinkActive="active">
-        Perfil
-      </a>
     </div>
-
-    <button class="btn-sair" (click)="authService.logout()">
-      Sair
-    </button>
   </nav>
 
   <div class="welcome">
@@ -88,45 +89,35 @@
 
   </div>
 
-  <div class="usuarios">
+</div>
 
-    <div class="topo-tabela">
-
-      <div>
-        <h2>Usuário do sistema</h2>
-        <p>Dados do cliente logado no IF Bank</p>
+<div class="modal-overlay" *ngIf="perfilAberto()" (click)="fecharPerfil()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <button class="modal-fechar" (click)="fecharPerfil()">✕</button>
+    <div class="modal-avatar">{{ (usuario()?.nome?.charAt(0) ?? 'U').toUpperCase() }}</div>
+    <h2 class="modal-nome">{{ usuario()?.nome }}</h2>
+    <p class="modal-email">{{ usuario()?.email }}</p>
+    <div class="modal-dados">
+      <div class="modal-item">
+        <span>Perfil</span>
+        <strong>{{ usuario()?.perfil }}</strong>
       </div>
-
+      <div class="modal-item">
+        <span>Status</span>
+        <strong>{{ usuario()?.status }}</strong>
+      </div>
+      <div class="modal-item">
+        <span>Conta</span>
+        <strong>{{ usuario()?.conta?.numeroConta ?? '-' }}</strong>
+      </div>
+      <div class="modal-item">
+        <span>Saldo Atual</span>
+        <strong>R$ {{ formatarValor(usuario()?.conta?.saldo ?? 0) }}</strong>
+      </div>
     </div>
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Perfil</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngIf="usuario()">
-          <td>{{ usuario()?.id }}</td>
-          <td>{{ usuario()?.nome }}</td>
-          <td>{{ usuario()?.email }}</td>
-          <td>
-            <span class="perfil">{{ usuario()?.perfil }}</span>
-          </td>
-          <td>
-            <span class="status">{{ usuario()?.status }}</span>
-          </td>
-        </tr>
-      </tbody>
-
-    </table>
-
+    <div class="modal-botoes">
+      <button class="modal-btn-editar">Editar Perfil</button>
+      <button class="modal-btn-senha">Alterar Senha</button>
+    </div>
   </div>
-
 </div>

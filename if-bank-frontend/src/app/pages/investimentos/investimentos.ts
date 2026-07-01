@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -45,6 +45,8 @@ export class Investimentos implements OnInit {
   enviando = signal(false);
 
   carregando = signal(true);
+  menuAberto = signal(false);
+  perfilAberto = signal(false);
 
   form = {
     tipo: '',
@@ -125,7 +127,6 @@ export class Investimentos implements OnInit {
 
   }
 
-  //limpa o filtro de data, e retorna a lista total dos investimentos daquele usuario
   limparFiltro(): void {
 
     this.filtroDataInicio = '';
@@ -261,6 +262,26 @@ export class Investimentos implements OnInit {
 
     );
 
+  }
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(!this.menuAberto());
+  }
+
+  abrirPerfil(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(false);
+    this.perfilAberto.set(true);
+  }
+
+  fecharPerfil(): void {
+    this.perfilAberto.set(false);
+  }
+
+  @HostListener('document:click')
+  fecharMenu(): void {
+    this.menuAberto.set(false);
   }
 
   formatarValor(valor: number): string {

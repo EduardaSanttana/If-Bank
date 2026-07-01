@@ -54,7 +54,6 @@ public class ContaRestController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	// atualizar conta
 	@PutMapping("/{id}")
 	public ResponseEntity<Conta> update(
 	        @PathVariable Long id,

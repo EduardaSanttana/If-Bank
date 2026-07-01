@@ -1,5 +1,8 @@
 package edu.ifsp.ifbank.api;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,25 +15,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import edu.ifsp.ifbank.modelo.Usuario;
-import edu.ifsp.ifbank.modelo.enums.TipoMovimentacao;
-import edu.ifsp.ifbank.persistence.UsuarioRepositorio;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import edu.ifsp.ifbank.modelo.Conta;
 import edu.ifsp.ifbank.modelo.Investimento;
 import edu.ifsp.ifbank.modelo.Movimentacao;
+import edu.ifsp.ifbank.modelo.Usuario;
+import edu.ifsp.ifbank.modelo.enums.TipoMovimentacao;
 import edu.ifsp.ifbank.persistence.ContaRepositorio;
 import edu.ifsp.ifbank.persistence.InvestimentoRepositorio;
 import edu.ifsp.ifbank.persistence.MovimentacaoRepositorio;
+import edu.ifsp.ifbank.persistence.UsuarioRepositorio;
 
 @RestController
 @RequestMapping(path = "/api/investimento", produces = "application/json")
@@ -105,9 +103,6 @@ public class InvestimentoRestController {
 	            dataFim
 	    );
 	}
-	
-	// parte central da logica de criacao de um investimento, calculo de saldo e tudo mais
-	
 	
 	private Usuario buscarUsuario(Long usuarioId) {
 

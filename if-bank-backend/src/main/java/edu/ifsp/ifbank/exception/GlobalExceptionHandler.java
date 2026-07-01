@@ -10,11 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-/**
- * Centraliza o tratamento de erros da API, garantindo que toda resposta de
- * erro tenha o formato { "mensagem": "..." }, usado pelo frontend para
- * exibir feedback ao usuario.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

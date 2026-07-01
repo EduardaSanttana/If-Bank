@@ -10,11 +10,6 @@ import edu.ifsp.ifbank.modelo.Usuario;
 import edu.ifsp.ifbank.modelo.enums.StatusUsuario;
 import edu.ifsp.ifbank.persistence.UsuarioRepositorio;
 
-/**
- * Regras de negocio da aprovacao de abertura de contas (requisito 6),
- * acessivel somente ao perfil GERENTE (a restricao de acesso por perfil
- * e responsabilidade do controller/camada de autorizacao).
- */
 @Service
 public class AprovacaoContaService {
 

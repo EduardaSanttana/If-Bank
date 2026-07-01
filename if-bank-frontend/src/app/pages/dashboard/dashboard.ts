@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -23,6 +23,8 @@ export class Dashboard implements OnInit {
   movimentacoes = signal<Movimentacao[]>([]);
   totalEntradas = signal(0);
   totalSaidas = signal(0);
+  menuAberto = signal(false);
+  perfilAberto = signal(false);
 
   ngOnInit(): void {
 
@@ -54,6 +56,26 @@ export class Dashboard implements OnInit {
 
     });
 
+  }
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(!this.menuAberto());
+  }
+
+  abrirPerfil(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(false);
+    this.perfilAberto.set(true);
+  }
+
+  fecharPerfil(): void {
+    this.perfilAberto.set(false);
+  }
+
+  @HostListener('document:click')
+  fecharMenu(): void {
+    this.menuAberto.set(false);
   }
 
   formatarValor(valor: number): string {

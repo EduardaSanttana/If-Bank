@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -25,24 +25,17 @@ export class Transferencias implements OnInit {
   private usuarioService = inject(UsuarioService);
   protected authService = inject(AuthService);
 
-  // Estado atualizado dentro de callbacks assíncronos (subscribe) precisa ser
-  // signal nesta app zoneless, senão a view não é avisada para re-renderizar
-  // quando a resposta HTTP chega (mesmo bug corrigido na tela do gerente).
   usuario = signal<Usuario | null>(null);
   contas = signal<Conta[]>([]);
-
-  // lista completa (ja filtrada pela conta do usuario), sem filtro de periodo
   private todasTransferencias = signal<Transferencia[]>([]);
-
-  // lista apos aplicar o filtro de periodo (mesmo padrao da tela de investimentos)
   transferencias = signal<Transferencia[]>([]);
-
   carregando = signal(true);
+  menuAberto = signal(false);
+  perfilAberto = signal(false);
 
   filtroDataInicio = '';
   filtroDataFim = '';
 
-  // paginacao, 5 por pagina
   paginaAtual = signal(1);
   itensPorPagina = 5;
 
@@ -119,7 +112,6 @@ export class Transferencias implements OnInit {
 
   }
 
-  //limpa o filtro de data, e retorna a lista total de transferencias daquele usuario
   limparFiltro(): void {
 
     this.filtroDataInicio = '';
@@ -181,6 +173,13 @@ export class Transferencias implements OnInit {
       return;
     }
 
+    const saldoAtual = this.usuario()?.conta?.saldo ?? 0;
+    if (this.form.valor > saldoAtual) {
+      this.mensagem.set('Saldo insuficiente para realizar a transferência.');
+      this.mensagemErro.set(true);
+      return;
+    }
+
     this.enviando.set(true);
 
     const payload: Transferencia = {
@@ -205,6 +204,26 @@ export class Transferencias implements OnInit {
         this.enviando.set(false);
       },
     });
+  }
+
+  toggleMenu(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(!this.menuAberto());
+  }
+
+  abrirPerfil(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(false);
+    this.perfilAberto.set(true);
+  }
+
+  fecharPerfil(): void {
+    this.perfilAberto.set(false);
+  }
+
+  @HostListener('document:click')
+  fecharMenu(): void {
+    this.menuAberto.set(false);
   }
 
   formatarValor(valor: number): string {

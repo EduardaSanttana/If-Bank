@@ -15,13 +15,6 @@ import edu.ifsp.ifbank.modelo.enums.StatusUsuario;
 import edu.ifsp.ifbank.persistence.ContaRepositorio;
 import edu.ifsp.ifbank.persistence.UsuarioRepositorio;
 
-/**
- * Regras de negocio da abertura de conta (requisito 1):
- * - valida duplicidade de CPF e e-mail
- * - salva a foto enviada
- * - cria o usuario com status PENDENTE (aguardando aprovacao do gerente)
- * - cria a conta vinculada, com saldo zero e numero gerado automaticamente
- */
 @Service
 public class AbrirContaService {
 
@@ -50,7 +43,6 @@ public class AbrirContaService {
             throw new NegocioException("Já existe uma conta cadastrada com este e-mail.");
         }
 
-        // Salva a foto antes de persistir, para nao deixar usuario "orfao" se a foto falhar
         String caminhoFoto = armazenamentoArquivoService.salvarFoto(foto);
 
         Usuario usuario = new Usuario();

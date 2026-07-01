@@ -11,10 +11,11 @@
     <div class="header-right">
       <div class="user-menu">
         <button class="user-menu-trigger" (click)="toggleMenu($event)">
-          <h2>Olá, {{ authService.getUsuario()?.nome ?? '...' }} 👋</h2>
+          <span class="nome-usuario">Olá, {{ authService.getUsuario()?.nome ?? '...' }} 👋</span>
           <span class="seta-dropdown" [class.aberta]="menuAberto()">▾</span>
         </button>
         <div class="dropdown-menu" *ngIf="menuAberto()">
+          <button class="dropdown-item" (click)="abrirPerfil($event)">Perfil</button>
           <button class="btn-sair-dropdown" (click)="authService.logout()">Sair</button>
         </div>
       </div>
@@ -25,7 +26,6 @@
   <nav class="navbar">
     <div class="nav-links">
       <a *ngIf="authService.getUsuario()?.perfil === 'GERENTE'" routerLink="/gerente" routerLinkActive="active">Gerenciamento</a>
-      <a routerLink="/perfil" routerLinkActive="active">Perfil</a>
     </div>
   </nav>
 
@@ -51,7 +51,6 @@
     <p>Carregando...</p>
   </div>
 
-  <!-- ABA PENDENTES -->
   <div *ngIf="!carregando() && abaAtiva === 'pendentes'" class="tabela-container">
 
     <div class="topo-tabela">
@@ -98,7 +97,6 @@
 
   </div>
 
-  <!-- ABA HISTÓRICO -->
   <div *ngIf="!carregando() && abaAtiva === 'historico'" class="tabela-container">
 
     <div class="topo-tabela">
@@ -140,4 +138,27 @@
 
   </div>
 
+</div>
+
+<div class="modal-overlay" *ngIf="perfilAberto()" (click)="fecharPerfil()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <button class="modal-fechar" (click)="fecharPerfil()">✕</button>
+    <div class="modal-avatar">{{ (authService.getUsuario()?.nome?.charAt(0) ?? 'G').toUpperCase() }}</div>
+    <h2 class="modal-nome">{{ authService.getUsuario()?.nome }}</h2>
+    <p class="modal-email">{{ authService.getUsuario()?.email }}</p>
+    <div class="modal-dados">
+      <div class="modal-item">
+        <span>Perfil</span>
+        <strong>{{ authService.getUsuario()?.perfil }}</strong>
+      </div>
+      <div class="modal-item">
+        <span>Status</span>
+        <strong>{{ authService.getUsuario()?.status }}</strong>
+      </div>
+    </div>
+    <div class="modal-botoes">
+      <button class="modal-btn-editar">Editar Perfil</button>
+      <button class="modal-btn-senha">Alterar Senha</button>
+    </div>
+  </div>
 </div>

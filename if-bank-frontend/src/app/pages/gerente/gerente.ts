@@ -22,11 +22,6 @@ export class Gerente implements OnInit {
 
   abaAtiva: Aba = 'pendentes';
 
-  // Estado atualizado dentro de callbacks assíncronos (subscribe) precisa ser
-  // signal: a app é zoneless (sem zone.js), então atribuir em campos comuns
-  // ("this.carregando = false") não avisa o Angular para re-renderizar a view
-  // quando a resposta HTTP chega. Isso fazia a tela ficar presa em
-  // "Carregando..." mesmo com a requisição já tendo retornado com sucesso.
   pendentes = signal<Usuario[]>([]);
   historico = signal<Usuario[]>([]);
 
@@ -37,6 +32,7 @@ export class Gerente implements OnInit {
   mensagemTipo = signal<'sucesso' | 'rejeitado' | 'erro'>('sucesso');
 
   menuAberto = signal(false);
+  perfilAberto = signal(false);
 
   ngOnInit(): void {
     this.carregarPendentes();
@@ -126,6 +122,16 @@ export class Gerente implements OnInit {
     this.menuAberto.set(!this.menuAberto());
   }
 
+  abrirPerfil(event: Event): void {
+    event.stopPropagation();
+    this.menuAberto.set(false);
+    this.perfilAberto.set(true);
+  }
+
+  fecharPerfil(): void {
+    this.perfilAberto.set(false);
+  }
+
   @HostListener('document:click')
   fecharMenu(): void {
     this.menuAberto.set(false);
@@ -133,7 +139,6 @@ export class Gerente implements OnInit {
 
   formatarData(data: string): string {
     if (!data) return '-';
-    // Evita problema de fuso horário ao interpretar "yyyy-MM-dd" como data local
     const [ano, mes, dia] = data.split('-').map(Number);
     return new Date(ano, mes - 1, dia).toLocaleDateString('pt-BR');
   }

@@ -35,7 +35,6 @@ export class AbrirConta {
   mensagemErro = false;
   enviando = false;
 
-  /** Captura o arquivo de foto escolhido e gera uma pré-visualização. */
   onFotoSelecionada(event: Event): void {
     const input = event.target as HTMLInputElement;
     const arquivo = input.files?.[0] ?? null;
@@ -50,7 +49,6 @@ export class AbrirConta {
     }
   }
 
-  /** Mantém apenas dígitos no campo de CPF, já que o backend espera só números. */
   onCpfInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.form.cpf = input.value.replace(/\D/g, '').slice(0, 11);

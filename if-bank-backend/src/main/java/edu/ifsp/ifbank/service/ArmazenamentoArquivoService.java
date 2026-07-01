@@ -11,15 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.ifsp.ifbank.exception.NegocioException;
 
-/**
- * Responsavel por persistir arquivos enviados pelo usuario (ex.: foto de
- * cadastro) na pasta configurada em app.upload.dir, retornando o caminho
- * relativo a ser salvo no banco.
- */
 @Service
 public class ArmazenamentoArquivoService {
 
-    private static final long TAMANHO_MAXIMO_BYTES = 5L * 1024 * 1024; // 5MB
+    private static final long TAMANHO_MAXIMO_BYTES = 5L * 1024 * 1024;
 
     @Value("${app.upload.dir:uploads}")
     private String uploadDir;

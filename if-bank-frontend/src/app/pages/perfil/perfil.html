@@ -15,9 +15,18 @@
 
         </div>
 
-        <button class="btn-voltar" routerLink="/dashboard">
-            Dashboard
-        </button>
+        <div class="header-right">
+          <div class="user-menu">
+            <button class="user-menu-trigger" (click)="toggleMenu($event)">
+              <span class="nome-usuario">{{ usuario()?.nome ?? '...' }} 👋</span>
+              <span class="seta-dropdown" [class.aberta]="menuAberto()">▾</span>
+            </button>
+            <div class="dropdown-menu" *ngIf="menuAberto()">
+              <a routerLink="/dashboard" class="dropdown-item">Dashboard</a>
+              <button class="btn-sair-dropdown" (click)="authService.logout()">Sair</button>
+            </div>
+          </div>
+        </div>
 
     </header>
 

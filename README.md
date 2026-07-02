@@ -2,6 +2,8 @@
 
 Sistema de Internet Banking desenvolvido como projeto da disciplina de Programação com Frameworks Web.
 
+**UTILIZE A BRANCH DEV PARA TESTES**
+
 ## Tecnologias utilizadas
 
 ### Backend
